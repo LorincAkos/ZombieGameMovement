@@ -6,10 +6,26 @@ namespace ZombieGameMovement
         bool goUp, goDown, goLeft, goRight, gameOver;
         EnumContainer.DirectionType direction = EnumContainer.DirectionType.UP;
         int playerHealth = 100;
-        int speed = 10;
+        int speed = 2;
         int ammo = 10;
         int zombieSpeed = 3;
         int score = 0;
+
+        private int tileSize = 32; // Example tile size (adjust as needed)
+        // Define map dimensions and viewport dimensions
+        private int mapWidth = Properties.Resources.TestMap.Width;
+        private int mapHeight = Properties.Resources.TestMap.Height;
+        private int viewportWidth;
+        private int viewportHeight;
+
+        // Player position and initial viewport position
+        private int playerX = 0;
+        private int playerY = 0;
+        private int viewportX = 0;
+        private int viewportY = 0;
+
+        Image fullMap = Properties.Resources.TestMap;
+
 
         Random random = new Random();
 
@@ -20,6 +36,20 @@ namespace ZombieGameMovement
         public Form1()
         {
             InitializeComponent();
+            viewportHeight = pictureBox1.Height;
+            viewportWidth = pictureBox1.Width;
+
+            // Calculate viewport position relative to player
+            viewportX = playerX - viewportWidth / 2;
+            viewportY = playerY - viewportHeight / 2;
+
+            // Ensure viewport stays within map bounds
+            viewportX = Math.Max(0, Math.Min(mapWidth - viewportWidth, viewportX));
+            viewportY = Math.Max(0, Math.Min(mapHeight - viewportHeight, viewportY));
+
+            playerX = player.Left;
+            playerY = player.Top;
+            UpdateViewport();
         }
 
         private void MainTimerEvent(object sender, EventArgs e)
@@ -36,22 +66,22 @@ namespace ZombieGameMovement
             txtammo.Text = "Ammo: " + ammo;
             txtscore.Text = "Kills: " + score;
 
-            if (goLeft && player.Left > 0) 
+            if (goLeft && player.Left > 0)
             {
                 player.Left -= speed;
             }
 
-            if (goRight && player.Left + player.Width < this.ClientSize.Width)
+            if (goRight && player.Left + player.Width < pictureBox1.Width)
             {
                 player.Left += speed;
             }
 
-            if(goUp && player.Top > 40)
+            if (goUp && player.Top > 40)
             {
                 player.Top -= speed;
             }
 
-            if (goDown && player.Top +player.Height < this.ClientSize.Height)
+            if (goDown && player.Top + player.Height < pictureBox1.Height)
             {
                 player.Top += speed;
             }
@@ -59,11 +89,12 @@ namespace ZombieGameMovement
 
         private void KeyIsDown(object sender, KeyEventArgs e)
         {
-            if(e.KeyCode.Equals(Keys.Left))
+            if (e.KeyCode.Equals(Keys.Left))
             {
                 goLeft = true;
                 direction = EnumContainer.DirectionType.LEFT;
                 player.Image = Properties.Resources.left;
+                playerX = playerX - 1;
             }
 
             if (e.KeyCode.Equals(Keys.Right))
@@ -71,6 +102,7 @@ namespace ZombieGameMovement
                 goRight = true;
                 direction = EnumContainer.DirectionType.RIGHT;
                 player.Image = Properties.Resources.right;
+                playerX = playerX + 1;
             }
 
             if (e.KeyCode.Equals(Keys.Up))
@@ -78,6 +110,7 @@ namespace ZombieGameMovement
                 goUp = true;
                 direction = EnumContainer.DirectionType.UP;
                 player.Image = Properties.Resources.up;
+                playerY = playerY - 1;
             }
 
             if (e.KeyCode.Equals(Keys.Down))
@@ -85,7 +118,10 @@ namespace ZombieGameMovement
                 goDown = true;
                 direction = EnumContainer.DirectionType.DOWN;
                 player.Image = Properties.Resources.down;
+                playerY = playerY + 1;
             }
+
+            UpdateViewport();
         }
 
         private void KeyIsUp(object sender, KeyEventArgs e)
@@ -110,7 +146,7 @@ namespace ZombieGameMovement
                 goDown = false;
             }
 
-            if(e.KeyCode.Equals(Keys.Space))
+            if (e.KeyCode.Equals(Keys.Space))
             {
                 ShootBullet(direction);
             }
@@ -120,9 +156,35 @@ namespace ZombieGameMovement
         {
             Bullet bullet = new Bullet();
             bullet.direction = direction;
-            bullet.bulletLeft = player.Left + (player.Width /2); 
-            bullet.bulletTop = player.Top + (player.Height /2);
+            bullet.bulletLeft = player.Left + (player.Width / 2);
+            bullet.bulletTop = player.Top + (player.Height / 2);
             bullet.MakeBullet(this);
+        }
+
+        private void UpdateViewport()
+        {
+            // Calculate viewport position relative to player
+            viewportX = playerX - viewportWidth / 2;
+            viewportY = playerY - viewportHeight / 2;
+
+            // Ensure viewport stays within map bounds
+            viewportX = Math.Max(0, Math.Min(mapWidth - viewportWidth, viewportX));
+            viewportY = Math.Max(0, Math.Min(mapHeight - viewportHeight, viewportY));
+
+            // Calculate the portion of the map image to be displayed within the viewport
+            Rectangle sourceRect = new Rectangle(viewportX * tileSize, viewportY * tileSize, viewportWidth * tileSize, viewportHeight * tileSize);
+
+            // Create a Bitmap to hold the portion of the map image
+            Bitmap viewportBitmap = new Bitmap(viewportWidth, viewportHeight);
+
+            // Copy the portion of the map image to the Bitmap
+            using (Graphics g = Graphics.FromImage(viewportBitmap))
+            {
+                g.DrawImage(fullMap, new Rectangle(0, 0, viewportWidth * tileSize, viewportHeight * tileSize), sourceRect, GraphicsUnit.Pixel);
+            }
+
+            // Display the portion of the map image within the PictureBox control
+            pictureBox1.Image = viewportBitmap;
         }
 
         private void MakeZombies()
