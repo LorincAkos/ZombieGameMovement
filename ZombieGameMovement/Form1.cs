@@ -4,7 +4,7 @@ namespace ZombieGameMovement
     {
 
         bool goUp, goDown, goLeft, goRight, gameOver;
-        string facing = "up";
+        EnumContainer.DirectionType direction = EnumContainer.DirectionType.UP;
         int playerHealth = 100;
         int speed = 10;
         int ammo = 10;
@@ -62,28 +62,28 @@ namespace ZombieGameMovement
             if(e.KeyCode.Equals(Keys.Left))
             {
                 goLeft = true;
-                facing = "left";
+                direction = EnumContainer.DirectionType.LEFT;
                 player.Image = Properties.Resources.left;
             }
 
             if (e.KeyCode.Equals(Keys.Right))
             {
                 goRight = true;
-                facing = "right";
+                direction = EnumContainer.DirectionType.RIGHT;
                 player.Image = Properties.Resources.right;
             }
 
             if (e.KeyCode.Equals(Keys.Up))
             {
                 goUp = true;
-                facing = "up";
+                direction = EnumContainer.DirectionType.UP;
                 player.Image = Properties.Resources.up;
             }
 
             if (e.KeyCode.Equals(Keys.Down))
             {
                 goDown = true;
-                facing = "down";
+                direction = EnumContainer.DirectionType.DOWN;
                 player.Image = Properties.Resources.down;
             }
         }
@@ -112,11 +112,11 @@ namespace ZombieGameMovement
 
             if(e.KeyCode.Equals(Keys.Space))
             {
-                ShootBullet(facing);
+                ShootBullet(direction);
             }
         }
 
-        private void ShootBullet(string direction)
+        private void ShootBullet(EnumContainer.DirectionType direction)
         {
             Bullet bullet = new Bullet();
             bullet.direction = direction;

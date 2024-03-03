@@ -10,7 +10,7 @@ namespace ZombieGameMovement
 {
     internal class Bullet
     {
-        public string direction;
+        public EnumContainer.DirectionType direction;
         public int bulletLeft;
         public int bulletTop;
 
@@ -36,22 +36,22 @@ namespace ZombieGameMovement
 
         private void BulletTimerEvent(object? sender, EventArgs e)
         {
-            if (direction.Equals("left"))
+            if (direction.Equals(EnumContainer.DirectionType.LEFT))
             {
                 bullet.Left -= speed;
             }
 
-            if (direction.Equals("right"))
+            if (direction.Equals(EnumContainer.DirectionType.RIGHT))
             {
                 bullet.Left += speed;
             }
 
-            if (direction.Equals("up")) 
+            if (direction.Equals(EnumContainer.DirectionType.UP)) 
             {
                 bullet.Top -= speed;
             }
 
-            if(direction.Equals("down"))
+            if(direction.Equals(EnumContainer.DirectionType.DOWN))
             {
                 bullet.Top += speed;
             }
