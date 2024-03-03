@@ -34,9 +34,9 @@
             txthealth = new Label();
             healthBar = new ProgressBar();
             GameTImer = new System.Windows.Forms.Timer(components);
-            pictureBox1 = new PictureBox();
+            map = new PictureBox();
             player = new PictureBox();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)map).BeginInit();
             ((System.ComponentModel.ISupportInitialize)player).BeginInit();
             SuspendLayout();
             // 
@@ -45,9 +45,9 @@
             txtammo.AutoSize = true;
             txtammo.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
             txtammo.ForeColor = Color.White;
-            txtammo.Location = new Point(10, 12);
+            txtammo.Location = new Point(9, 9);
             txtammo.Name = "txtammo";
-            txtammo.Size = new Size(118, 32);
+            txtammo.Size = new Size(92, 25);
             txtammo.TabIndex = 0;
             txtammo.Text = "Ammo: 0";
             // 
@@ -56,9 +56,9 @@
             txtscore.AutoSize = true;
             txtscore.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
             txtscore.ForeColor = Color.White;
-            txtscore.Location = new Point(419, 12);
+            txtscore.Location = new Point(403, 8);
             txtscore.Name = "txtscore";
-            txtscore.Size = new Size(90, 32);
+            txtscore.Size = new Size(68, 25);
             txtscore.TabIndex = 1;
             txtscore.Text = "Kills: 0";
             // 
@@ -67,18 +67,17 @@
             txthealth.AutoSize = true;
             txthealth.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
             txthealth.ForeColor = Color.White;
-            txthealth.Location = new Point(759, 12);
+            txthealth.Location = new Point(664, 9);
             txthealth.Name = "txthealth";
-            txthealth.Size = new Size(88, 32);
+            txthealth.Size = new Size(70, 25);
             txthealth.TabIndex = 2;
             txthealth.Text = "Health";
             // 
             // healthBar
             // 
-            healthBar.Location = new Point(849, 19);
-            healthBar.Margin = new Padding(3, 4, 3, 4);
+            healthBar.Location = new Point(743, 14);
             healthBar.Name = "healthBar";
-            healthBar.Size = new Size(193, 31);
+            healthBar.Size = new Size(169, 23);
             healthBar.TabIndex = 3;
             healthBar.Value = 100;
             // 
@@ -88,19 +87,22 @@
             GameTImer.Interval = 20;
             GameTImer.Tick += MainTimerEvent;
             // 
-            // pictureBox1
+            // map
             // 
-            pictureBox1.Location = new Point(10, 57);
-            pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(1034, 812);
-            pictureBox1.TabIndex = 4;
-            pictureBox1.TabStop = false;
+            map.BackColor = Color.Transparent;
+            map.Image = Properties.Resources.TestMap1;
+            map.Location = new Point(12, 42);
+            map.Margin = new Padding(3, 2, 3, 2);
+            map.Name = "map";
+            map.Size = new Size(5000, 2812);
+            map.TabIndex = 4;
+            map.TabStop = false;
             // 
             // player
             // 
+            player.BackColor = Color.Transparent;
             player.Image = Properties.Resources.up;
-            player.Location = new Point(476, 478);
-            player.Margin = new Padding(3, 4, 3, 4);
+            player.Location = new Point(416, 358);
             player.Name = "player";
             player.Size = new Size(71, 100);
             player.SizeMode = PictureBoxSizeMode.AutoSize;
@@ -109,22 +111,21 @@
             // 
             // Form1
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(64, 64, 64);
-            ClientSize = new Size(1056, 881);
+            ClientSize = new Size(922, 659);
             Controls.Add(player);
-            Controls.Add(pictureBox1);
             Controls.Add(healthBar);
             Controls.Add(txthealth);
             Controls.Add(txtscore);
             Controls.Add(txtammo);
-            Margin = new Padding(3, 4, 3, 4);
+            Controls.Add(map);
             Name = "Form1";
             Text = "Form1";
             KeyDown += KeyIsDown;
             KeyUp += KeyIsUp;
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)map).EndInit();
             ((System.ComponentModel.ISupportInitialize)player).EndInit();
             ResumeLayout(false);
             PerformLayout();
@@ -137,7 +138,7 @@
         private Label txthealth;
         private ProgressBar healthBar;
         private System.Windows.Forms.Timer GameTImer;
-        private PictureBox pictureBox1;
+        private PictureBox map;
         private PictureBox player;
     }
 }
