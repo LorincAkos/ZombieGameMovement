@@ -1,3 +1,6 @@
+using System.IO.Compression;
+using ZombieGameMovement.Properties;
+
 namespace ZombieGameMovement
 {
     public partial class Form1 : Form
@@ -6,17 +9,12 @@ namespace ZombieGameMovement
         bool goUp, goDown, goLeft, goRight, gameOver;
         EnumContainer.DirectionType direction = EnumContainer.DirectionType.UP;
         int playerHealth = 100;
-        int speed = 3;
-        int mapspeed = 18;
+        int speed = 10;
+        int mapspeed = 10;
         int ammo = 10;
         int zombieSpeed = 3;
         int score = 0;
-
-        private int tileSize = 32; // Example tile size (adjust as needed)
-        // Define map dimensions and viewport dimensions
-        Image fullMap = Properties.Resources.TestMap;
-        private int mapWidth = Properties.Resources.TestMap.Width;
-        private int mapHeight = Properties.Resources.TestMap.Height;
+        PictureBox player;
 
 
         Random random = new Random();
@@ -28,7 +26,10 @@ namespace ZombieGameMovement
         public Form1()
         {
             InitializeComponent();
-
+            this.DoubleBuffered = true;
+            player = CreatePlayer();
+            map.Controls.Add(player);
+            CreateZombies();
         }
 
         private void MainTimerEvent(object sender, EventArgs e)
@@ -45,12 +46,13 @@ namespace ZombieGameMovement
             txtammo.Text = "Ammo: " + ammo;
             txtscore.Text = "Kills: " + score;
 
+            //Player movement
             if (goLeft && player.Left > 0)
             {
                 player.Left -= speed;
             }
 
-            if (goRight && player.Left + player.Width < this.ClientSize.Width)
+            if (goRight && player.Left + player.Width < map.Width)
             {
                 player.Left += speed;
             }
@@ -60,12 +62,12 @@ namespace ZombieGameMovement
                 player.Top -= speed;
             }
 
-            if (goDown && player.Top + player.Height < this.ClientSize.Height)
+            if (goDown && player.Top + player.Height < map.Height)
             {
                 player.Top += speed;
             }
 
-            /////
+            //Map moving
             if (goLeft && map.Left < 12)
             {
                 map.Left += mapspeed;
@@ -84,6 +86,29 @@ namespace ZombieGameMovement
             if (goDown && map.Top > -2164)
             {
                 map.Top -= mapspeed;
+            }
+
+            //Zombie movement
+            foreach (PictureBox zom in zombiesList)
+            {
+                if (zom.Left > player.Left)
+                {
+                    zom.Left -= zombieSpeed;
+                }
+                if (zom.Left < player.Left)
+                {
+                    zom.Left += zombieSpeed;
+                }
+
+                if (zom.Top > player.Top)
+                {
+                    zom.Top -= zombieSpeed;
+                }
+
+                if (zom.Top < player.Top)
+                {
+                    zom.Top += zombieSpeed;
+                }
             }
 
         }
@@ -150,18 +175,36 @@ namespace ZombieGameMovement
 
         private void ShootBullet(EnumContainer.DirectionType direction)
         {
-            Bullet bullet = new Bullet();
-            bullet.direction = direction;
-            bullet.bulletLeft = player.Left + (player.Width / 2);
-            bullet.bulletTop = player.Top + (player.Height / 2);
-            bullet.MakeBullet(this);
+            Bullet bullet = new()
+            {
+                direction = direction,
+                bulletLeft = player.Left + (player.Width / 2),
+                bulletTop = player.Top + (player.Height / 2)
+            };
+            bullet.MakeBullet(map);
         }
 
 
 
-        private void MakeZombies()
+        private void CreateZombies()
         {
+            PictureBox zom = new()
+            {
+                Image = Properties.Resources.zright,
+                Top = 42,
+                Left = 12
+            };
+            zombiesList.Add(zom);
+            map.Controls.Add(zom);
+        }
 
+        private PictureBox CreatePlayer()
+        {
+            PictureBox player = new();
+            player.Image = Properties.Resources.up;
+            player.Left = 200;
+            player.Top = 200;
+            return player;
         }
 
         private void RestartGame()

@@ -18,7 +18,7 @@ namespace ZombieGameMovement
         private PictureBox bullet = new();
         private System.Windows.Forms.Timer bulletTimer = new();
 
-        public void MakeBullet(Form form)
+        public void MakeBullet(PictureBox form)
         {
             bullet.BackColor = Color.White;
             bullet.Size = new Size(5, 5);
@@ -56,7 +56,7 @@ namespace ZombieGameMovement
                 bullet.Top += speed;
             }
 
-            if(bullet.Left < 10 || bullet.Left > 860 || bullet.Top < 10 || bullet.Top > 600)
+            if(bullet.Left < 10 || bullet.Left > 5000 || bullet.Top < 10 || bullet.Top > 2812)
             {
                 bulletTimer.Stop();
                 bulletTimer.Dispose();
