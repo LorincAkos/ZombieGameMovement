@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             txtammo = new Label();
             txtscore = new Label();
             txthealth = new Label();
@@ -43,9 +44,9 @@
             txtammo.AutoSize = true;
             txtammo.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
             txtammo.ForeColor = Color.White;
-            txtammo.Location = new Point(10, 12);
+            txtammo.Location = new Point(9, 9);
             txtammo.Name = "txtammo";
-            txtammo.Size = new Size(118, 32);
+            txtammo.Size = new Size(92, 25);
             txtammo.TabIndex = 0;
             txtammo.Text = "Ammo: 0";
             // 
@@ -54,9 +55,9 @@
             txtscore.AutoSize = true;
             txtscore.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
             txtscore.ForeColor = Color.White;
-            txtscore.Location = new Point(461, 11);
+            txtscore.Location = new Point(403, 8);
             txtscore.Name = "txtscore";
-            txtscore.Size = new Size(90, 32);
+            txtscore.Size = new Size(68, 25);
             txtscore.TabIndex = 1;
             txtscore.Text = "Kills: 0";
             // 
@@ -65,18 +66,17 @@
             txthealth.AutoSize = true;
             txthealth.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
             txthealth.ForeColor = Color.White;
-            txthealth.Location = new Point(759, 12);
+            txthealth.Location = new Point(664, 9);
             txthealth.Name = "txthealth";
-            txthealth.Size = new Size(88, 32);
+            txthealth.Size = new Size(70, 25);
             txthealth.TabIndex = 2;
             txthealth.Text = "Health";
             // 
             // healthBar
             // 
-            healthBar.Location = new Point(849, 19);
-            healthBar.Margin = new Padding(3, 4, 3, 4);
+            healthBar.Location = new Point(743, 14);
             healthBar.Name = "healthBar";
-            healthBar.Size = new Size(193, 31);
+            healthBar.Size = new Size(169, 23);
             healthBar.TabIndex = 3;
             healthBar.Value = 100;
             // 
@@ -89,25 +89,27 @@
             // map
             // 
             map.BackColor = Color.Transparent;
-            map.Image = Properties.Resources.TestMap1;
-            map.Location = new Point(14, 56);
+            map.Image = (Image)resources.GetObject("map.Image");
+            map.Location = new Point(-3, 42);
+            map.Margin = new Padding(3, 2, 3, 2);
             map.Name = "map";
-            map.Size = new Size(5714, 3749);
+            map.Size = new Size(7680, 4320);
+            map.SizeMode = PictureBoxSizeMode.AutoSize;
             map.TabIndex = 4;
             map.TabStop = false;
+            map.Paint += CharacterPaintEvent;
             // 
             // Form1
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(64, 64, 64);
-            ClientSize = new Size(1054, 879);
+            ClientSize = new Size(1904, 1041);
             Controls.Add(healthBar);
             Controls.Add(txthealth);
             Controls.Add(txtscore);
             Controls.Add(txtammo);
             Controls.Add(map);
-            Margin = new Padding(3, 4, 3, 4);
             Name = "Form1";
             Text = "Form1";
             KeyDown += KeyIsDown;
