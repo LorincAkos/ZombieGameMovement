@@ -1,193 +1,218 @@
 using System.IO.Compression;
+using System.Reflection;
+using System.Windows.Forms;
 using ZombieGameMovement.Properties;
+using static ZombieGameMovement.EnumContainer;
+
 
 namespace ZombieGameMovement
 {
     public partial class Form1 : Form
     {
-        private Image player;
-        private EnumContainer.DirectionType direction = EnumContainer.DirectionType.UP;
-        private readonly int playerHealth = 100;
-        private readonly int speed = 10;
-        private readonly int ammo = 10;
+        private Player player;
+        private DirectionType direction;
+        private MapSettings mapSettings;
+        private readonly int ammo;
 
-        private bool goUp, goDown, goLeft, goRight, gameOver;
+        private bool gameOver;
+        private readonly int zombieSpeed;
+        private int score;
 
-        private readonly int mapSpeed = 10;
-        private int mapStartOnXAxis;
-        private int mapStartOnYAxis;
-        private int mapEndOnXAxis;
-        private int mapEndOnYAxis;
-        private int mapStartOnXAxisCriticalZone;
-        private int mapStartOnYAxisCriticalZone;
-        private int mapEndOnXAxisCriticalZone;
-        private int mapEndOnYAxisCriticalZone;
-        private readonly int zombieSpeed = 3;
-        private int score = 0;
+        private int steps;
+        private int slowDownFrameRate;
 
-        int steps = 0;
-        int slowDownFrameRate = 0;
-        private int playerX = 200;
-        private int playerY = 0;
-        private int playerHeight = 100;
-        private int playerWidth = 100;
+        Random random = new();
 
-
-        Random random = new Random();
-
-        List<PictureBox> zombiesList = new List<PictureBox>();
-        List<string> movement = new();
+        List<PictureBox> zombiesList = [];
 
         public Form1()
         {
             InitializeComponent();
-            this.DoubleBuffered = true;
-            
-            SetMapCoordinates();
-            //player = CreatePlayer();
-            //map.Controls.Add(player);
-            player = Image.FromFile("Sprites/Kuno_walk1.png");
-            movement = Directory.GetFiles("Sprites").ToList();
+            DoubleBuffered = true;
+
+            #region Setup
+
+            player = new(100, 10, 200, 0);
+            mapSettings = new(10, Height, Width, map.Height, map.Width);
+            zombieSpeed = 3;
+            score = 0;
+            steps = 0;
+            slowDownFrameRate = 0;
+            #endregion
+
             CreateZombies();
         }
 
+
         private void MainTimerEvent(object sender, EventArgs e)
         {
-            if (playerHealth > 0)
+            if (player.PlayerHealth > 0)
             {
-                healthBar.Value = playerHealth;
+                healthBar.Value = player.PlayerHealth;
             }
             else
             {
                 gameOver = true;
             }
 
-            txtammo.Text = "Ammo: " + ammo;
-            txtscore.Text = "Kills: " + score;
+            //txtammo.Text = "Ammo: " + ammo;
+            //txtscore.Text = "Kills: " + score;
 
-            //Player movement
-            if (goLeft && playerX > 0)
+            if (!player.Attack)
             {
-                playerX -= speed;
-                AnimatePlayer(0, 3);
+                //Parallel.Invoke(PlayerMovement, MapScrolling);
+                //Task.WhenAll(PlayerMovement(), MapScrolling());
+                MapScrolling();
+                PlayerMovement();
+
             }
 
-            if (goRight && playerX + player.Width < map.Width)
-            {
-                playerX += speed;
-                AnimatePlayer(0, 3);
-            }
+            ZomMovement();
 
-            if (goUp && playerY > 500)
-            {
-                playerY -= speed;
-            }
+            map.Refresh();
+        }
 
-            if (goDown && playerY + player.Height < map.Height)
-            {
-                playerY += speed;
-            }
-
-            //Map moving
-            if (goLeft && map.Left < mapStartOnXAxis && playerX < mapEndOnXAxisCriticalZone * -1)
-            {
-                map.Left += mapSpeed;
-            }
-
-            if (goRight && map.Left > mapEndOnXAxis && playerX > mapStartOnXAxisCriticalZone * -1)
-            {
-                map.Left -= mapSpeed;
-            }
-
-            if (goUp && map.Top < mapStartOnYAxis && playerY < mapEndOnYAxisCriticalZone * -1)
-            {
-                map.Top += mapSpeed;
-            }
-
-            if (goDown && map.Top > mapEndOnYAxis && playerY > mapStartOnYAxisCriticalZone * -1)
-            {
-                map.Top -= mapSpeed;
-            }
-
-            //Zombie movement
+        private void ZomMovement()
+        {
             foreach (PictureBox zom in zombiesList)
             {
-                if (zom.Left > playerX)
+                if (zom.Left > player.PlayerX)
                 {
                     zom.Left -= zombieSpeed;
                 }
-                if (zom.Left < playerX)
+                if (zom.Left < player.PlayerX)
                 {
                     zom.Left += zombieSpeed;
                 }
 
-                if (zom.Top > playerY)
+                if (zom.Top > player.PlayerY)
                 {
                     zom.Top -= zombieSpeed;
                 }
 
-                if (zom.Top < playerY)
+                if (zom.Top < player.PlayerY)
                 {
                     zom.Top += zombieSpeed;
                 }
             }
+        }
 
-            map.Invalidate();
-            this.Invalidate();
+
+        private void MapScrolling()
+        {
+            //if (InvokeRequired)
+            //{
+            //    Invoke((Action)MapScrolling);
+            //}
+
+            if (player.GoLeft && map.Left < mapSettings.MapStartOnXAxis && player.PlayerX < mapSettings.MapEndOnXAxisCriticalZone)
+            {
+                map.Left += mapSettings.MapSpeed;
+            }
+
+            if (player.GoRight && map.Left > mapSettings.MapEndOnXAxis && player.PlayerX > mapSettings.MapStartOnXAxisCriticalZone)
+            {
+                map.Left -= mapSettings.MapSpeed;
+            }
+
+            if (player.GoUp && map.Top < mapSettings.MapStartOnYAxis && player.PlayerY < mapSettings.MapEndOnYAxisCriticalZone)
+            {
+                map.Top += mapSettings.MapSpeed;
+            }
+
+            if (player.GoDown && map.Top > mapSettings.MapEndOnYAxis && player.PlayerY > mapSettings.MapStartOnYAxisCriticalZone)
+            {
+                map.Top -= mapSettings.MapSpeed;
+            }
+        }
+
+        private void PlayerMovement()
+        {
+            //if (InvokeRequired)
+            //{
+            //    Invoke((Action)PlayerMovement);
+            //}
+
+            if (player.GoLeft && player.PlayerX > 0)
+            {
+                player.PlayerX -= player.PlayerSpeed;
+                AnimatePlayer(SpriteContainer.walkRight);
+            }
+
+            if (player.GoRight && player.PlayerX + player.PlayerWidth < map.Width)
+            {
+                player.PlayerX += player.PlayerSpeed;
+                AnimatePlayer(SpriteContainer.walkRight);
+            }
+
+            if (player.GoUp && player.PlayerY > 500)
+            {
+                player.PlayerY -= player.PlayerSpeed;
+            }
+
+            if (player.GoDown && player.PlayerY + player.PlayerHeight < map.Height)
+            {
+                player.PlayerY += player.PlayerSpeed;
+            }
         }
 
         private void KeyIsDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode.Equals(Keys.Left))
             {
-                goLeft = true;
+                player.GoLeft = true;
                 direction = EnumContainer.DirectionType.LEFT;
             }
 
             if (e.KeyCode.Equals(Keys.Right))
             {
-                goRight = true;
+                player.GoRight = true;
                 direction = EnumContainer.DirectionType.RIGHT;
             }
 
             if (e.KeyCode.Equals(Keys.Up))
             {
-                goUp = true;
+                player.GoUp = true;
                 direction = EnumContainer.DirectionType.UP;
             }
 
             if (e.KeyCode.Equals(Keys.Down))
             {
-                goDown = true;
+                player.GoDown = true;
                 direction = EnumContainer.DirectionType.DOWN;
             }
 
+            if ((e.KeyCode == Keys.Space))
+            {
+                player.Attack = true;
+            }
         }
 
         private void KeyIsUp(object sender, KeyEventArgs e)
         {
             if (e.KeyCode.Equals(Keys.Left))
             {
-                goLeft = false;
+                player.GoLeft = false;
             }
 
             if (e.KeyCode.Equals(Keys.Right))
             {
-                goRight = false;
+                player.GoRight = false;
             }
 
             if (e.KeyCode.Equals(Keys.Up))
             {
-                goUp = false;
+                player.GoUp = false;
             }
 
             if (e.KeyCode.Equals(Keys.Down))
             {
-                goDown = false;
+                player.GoDown = false;
             }
 
             if (e.KeyCode.Equals(Keys.Space))
             {
+                player.Attack = false;
                 ShootBullet(direction);
             }
         }
@@ -197,8 +222,8 @@ namespace ZombieGameMovement
             Bullet bullet = new()
             {
                 direction = direction,
-                bulletLeft = playerX + (player.Width / 2),
-                bulletTop = playerY + (player.Height / 2),
+                bulletLeft = player.PlayerX + (player.PlayerWidth / 2),
+                bulletTop = player.PlayerY + (player.PlayerHeight / 2),
             };
             bullet.MakeBullet(map);
         }
@@ -215,32 +240,6 @@ namespace ZombieGameMovement
             map.Controls.Add(zom);
         }
 
-        private PictureBox CreatePlayer()
-        {
-            PictureBox player = new()
-            {
-                Image = Properties.Resources.up,
-                Left = 1920,
-                Top = 1080,
-                SizeMode = PictureBoxSizeMode.AutoSize
-            };
-            return player;
-        }
-
-        private void SetMapCoordinates()
-        {
-            mapStartOnXAxis = 0;
-            mapStartOnYAxis = 0;
-            mapEndOnXAxis = (map.Width - this.Width) * -1;
-            mapEndOnYAxis = (map.Height - this.Height) * -1;
-
-            mapStartOnXAxisCriticalZone = mapStartOnXAxis - this.Width / 2;
-            mapStartOnYAxisCriticalZone = mapStartOnYAxis - this.Height / 2;
-            mapEndOnXAxisCriticalZone = (map.Width - this.Width / 2) * -1;
-            mapEndOnYAxisCriticalZone = (map.Height - this.Height / 2) * -1;
-
-        }
-
         private void RestartGame()
         {
 
@@ -249,11 +248,14 @@ namespace ZombieGameMovement
         private void CharacterPaintEvent(object sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
-            g.DrawImage(player, playerX, playerY, playerWidth, playerHeight);
+            g.DrawImage(player.PlayerImg, player.PlayerX, player.PlayerY, player.PlayerWidth, player.PlayerHeight);
+
         }
 
-        private void AnimatePlayer(int start, int end)
+        private void AnimatePlayer(Image[] source)
         {
+            int end = source.Length - 1;
+
             slowDownFrameRate++;
             if (slowDownFrameRate == 4)
             {
@@ -261,12 +263,12 @@ namespace ZombieGameMovement
                 slowDownFrameRate = 0;
             }
 
-            if (steps > end || steps < start)
+            if (steps > end)
             {
-                steps = start;
+                steps = 0;
             }
 
-            player = Image.FromFile(movement[steps]);
+            player.PlayerImg = source[steps];
         }
     }
 }
