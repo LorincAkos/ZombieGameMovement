@@ -28,76 +28,51 @@
         /// </summary>
         private void InitializeComponent()
         {
-            components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            txtammo = new Label();
-            txtscore = new Label();
-            txthealth = new Label();
-            healthBar = new ProgressBar();
-            GameTImer = new System.Windows.Forms.Timer(components);
-            map = new PictureBox();
-            ((System.ComponentModel.ISupportInitialize)map).BeginInit();
+            button1 = new Button();
+            button2 = new Button();
+            label1 = new Label();
+            label2 = new Label();
             SuspendLayout();
             // 
-            // txtammo
+            // button1
             // 
-            txtammo.AutoSize = true;
-            txtammo.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
-            txtammo.ForeColor = Color.White;
-            txtammo.Location = new Point(9, 9);
-            txtammo.Name = "txtammo";
-            txtammo.Size = new Size(92, 25);
-            txtammo.TabIndex = 0;
-            txtammo.Text = "Ammo: 0";
+            button1.Location = new Point(338, 333);
+            button1.Name = "button1";
+            button1.Size = new Size(200, 50);
+            button1.TabIndex = 0;
+            button1.Text = "button1";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
             // 
-            // txtscore
+            // button2
             // 
-            txtscore.AutoSize = true;
-            txtscore.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
-            txtscore.ForeColor = Color.White;
-            txtscore.Location = new Point(403, 8);
-            txtscore.Name = "txtscore";
-            txtscore.Size = new Size(68, 25);
-            txtscore.TabIndex = 1;
-            txtscore.Text = "Kills: 0";
+            button2.Location = new Point(954, 333);
+            button2.Name = "button2";
+            button2.Size = new Size(200, 50);
+            button2.TabIndex = 1;
+            button2.Text = "button2";
+            button2.UseVisualStyleBackColor = true;
+            button2.Click += button2_Click;
             // 
-            // txthealth
+            // label1
             // 
-            txthealth.AutoSize = true;
-            txthealth.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
-            txthealth.ForeColor = Color.White;
-            txthealth.Location = new Point(664, 9);
-            txthealth.Name = "txthealth";
-            txthealth.Size = new Size(70, 25);
-            txthealth.TabIndex = 2;
-            txthealth.Text = "Health";
+            label1.AutoSize = true;
+            label1.Font = new Font("Segoe UI", 16F);
+            label1.Location = new Point(391, 288);
+            label1.Name = "label1";
+            label1.Size = new Size(88, 30);
+            label1.TabIndex = 2;
+            label1.Text = "Fix map";
             // 
-            // healthBar
+            // label2
             // 
-            healthBar.Location = new Point(743, 14);
-            healthBar.Name = "healthBar";
-            healthBar.Size = new Size(169, 23);
-            healthBar.TabIndex = 3;
-            healthBar.Value = 100;
-            // 
-            // GameTImer
-            // 
-            GameTImer.Enabled = true;
-            GameTImer.Interval = 20;
-            GameTImer.Tick += MainTimerEvent;
-            // 
-            // map
-            // 
-            map.BackColor = Color.Transparent;
-            map.Image = (Image)resources.GetObject("map.Image");
-            map.Location = new Point(-3, 42);
-            map.Margin = new Padding(3, 2, 3, 2);
-            map.Name = "map";
-            map.Size = new Size(7680, 4320);
-            map.SizeMode = PictureBoxSizeMode.AutoSize;
-            map.TabIndex = 4;
-            map.TabStop = false;
-            map.Paint += CharacterPaintEvent;
+            label2.AutoSize = true;
+            label2.Font = new Font("Segoe UI", 16F);
+            label2.Location = new Point(982, 288);
+            label2.Name = "label2";
+            label2.Size = new Size(156, 30);
+            label2.TabIndex = 3;
+            label2.Text = "Scrollable map";
             // 
             // Form1
             // 
@@ -105,27 +80,21 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(64, 64, 64);
             ClientSize = new Size(1904, 1041);
-            Controls.Add(healthBar);
-            Controls.Add(txthealth);
-            Controls.Add(txtscore);
-            Controls.Add(txtammo);
-            Controls.Add(map);
+            Controls.Add(label2);
+            Controls.Add(label1);
+            Controls.Add(button2);
+            Controls.Add(button1);
             Name = "Form1";
             Text = "Form1";
-            KeyDown += KeyIsDown;
-            KeyUp += KeyIsUp;
-            ((System.ComponentModel.ISupportInitialize)map).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
 
-        private Label txtammo;
-        private Label txtscore;
-        private Label txthealth;
-        private ProgressBar healthBar;
-        private System.Windows.Forms.Timer GameTImer;
-        private PictureBox map;
+        private Button button1;
+        private Button button2;
+        private Label label1;
+        private Label label2;
     }
 }

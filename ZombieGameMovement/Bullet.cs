@@ -34,6 +34,22 @@ namespace ZombieGameMovement
             bulletTimer.Start();
         }
 
+        public void MakeBullet(Form form)
+        {
+            bullet.BackColor = Color.White;
+            bullet.Size = new Size(5, 5);
+            bullet.Tag = "bullet";
+            bullet.Left = bulletLeft;
+            bullet.Top = bulletTop;
+            bullet.BringToFront();
+
+            form.Controls.Add(bullet);
+
+            bulletTimer.Interval = speed;
+            bulletTimer.Tick += new EventHandler(BulletTimerEvent);
+            bulletTimer.Start();
+        }
+
         private void BulletTimerEvent(object? sender, EventArgs e)
         {
             if (direction.Equals(EnumContainer.DirectionType.LEFT))
@@ -61,8 +77,6 @@ namespace ZombieGameMovement
                 bulletTimer.Stop();
                 bulletTimer.Dispose();
                 bullet.Dispose();
-                bulletTimer = null;
-                bullet = null;
             }
         }
     }

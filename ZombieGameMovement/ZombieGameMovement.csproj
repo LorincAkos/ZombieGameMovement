@@ -1,12 +1,56 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net8.0-windows</TargetFramework>
+    <TargetFramework>net8.0-windows10.0.22000.0</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Sprites\Kuno_walk1.png" />
+    <None Remove="Sprites\Kuno_walk2.png" />
+    <None Remove="Sprites\Kuno_walk3.png" />
+    <None Remove="Sprites\Kuno_walk4.png" />
+    <None Remove="Sprites\Zom_walk1.png" />
+    <None Remove="Sprites\Zom_walk2.png" />
+    <None Remove="Sprites\Zom_walk3.png" />
+    <None Remove="Sprites\Zom_walk4.png" />
+    <None Remove="Sprites\Zom_walk5.png" />
+    <None Remove="Sprites\Zom_walk6.png" />
+    <None Remove="Sprites\Zom_walk7.png" />
+    <None Remove="Sprites\Zom_walk8.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Sprites\Kuno_walk1.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Sprites\Kuno_walk2.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Sprites\Kuno_walk3.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Sprites\Kuno_walk4.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Sprites\Zom_walk1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Sprites\Zom_walk2.png" />
+    <EmbeddedResource Include="Sprites\Zom_walk3.png" />
+    <EmbeddedResource Include="Sprites\Zom_walk4.png" />
+    <EmbeddedResource Include="Sprites\Zom_walk5.png" />
+    <EmbeddedResource Include="Sprites\Zom_walk6.png" />
+    <EmbeddedResource Include="Sprites\Zom_walk7.png" />
+    <EmbeddedResource Include="Sprites\Zom_walk8.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="GameWithFixMap.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="GameWithScrollableMap.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="Properties\Resources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -18,19 +62,5 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <None Update="Sprites\Kuno_walk1.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Sprites\Kuno_walk2.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Sprites\Kuno_walk3.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Sprites\Kuno_walk4.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 </Project>
