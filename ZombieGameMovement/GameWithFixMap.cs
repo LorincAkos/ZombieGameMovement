@@ -36,6 +36,7 @@ namespace ZombieGameMovement
             steps = 0;
             slowDownFrameRate = 0;
             maxEnemy = 10;
+            this.BackgroundImage = Properties.Resources.FixMap;
 
             #endregion
 
@@ -151,9 +152,14 @@ namespace ZombieGameMovement
                 direction = EnumContainer.DirectionType.DOWN;
             }
 
-            if ((e.KeyCode == Keys.Space))
+            if ((e.KeyCode.Equals(Keys.Space)))
             {
                 player.Attack = true;
+            }
+
+            if (e.KeyCode.Equals(Keys.K))
+            {
+                this.Close();
             }
         }
 
