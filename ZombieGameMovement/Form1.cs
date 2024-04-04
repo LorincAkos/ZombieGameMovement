@@ -1,10 +1,3 @@
-using System.IO.Compression;
-using System.Reflection;
-using System.Windows.Forms;
-using ZombieGameMovement.Properties;
-using static ZombieGameMovement.EnumContainer;
-
-
 namespace ZombieGameMovement
 {
     public partial class Form1 : Form
