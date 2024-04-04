@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GameWithScrollableMap));
             GameTImer = new System.Windows.Forms.Timer(components);
             txtammo = new Label();
             txtscore = new Label();
@@ -89,11 +88,11 @@
             // map
             // 
             map.BackColor = Color.Transparent;
-            map.Image = (Image)resources.GetObject("map.Image");
-            map.Location = new Point(-3, 42);
+            map.Image = Properties.Resources.FixMap;
+            map.Location = new Point(9, 42);
             map.Margin = new Padding(3, 2, 3, 2);
             map.Name = "map";
-            map.Size = new Size(7680, 4320);
+            map.Size = new Size(1920, 1080);
             map.SizeMode = PictureBoxSizeMode.AutoSize;
             map.TabIndex = 4;
             map.TabStop = false;

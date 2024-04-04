@@ -1,20 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ZombieGameMovement
+﻿namespace ZombieGameMovement
 {
     internal class Player
     {
-        public Image PlayerImg { get; set; }
+        public Image PlayerImg { get; private set; }
         public int PlayerHealth { get; set; }
         public int PlayerSpeed { get; }
         public int PlayerX { get; set; }
         public int PlayerY { get; set; }
         public int PlayerWidth { get; }
         public int PlayerHeight { get; }
+        private int Steps { get; set; }
+        private int SlowDownFrameRate { get; set; }
         public bool GoLeft { get; set; }
         public bool GoRight { get; set; }
         public bool GoUp { get; set; }
@@ -37,6 +33,23 @@ namespace ZombieGameMovement
             Attack = false;
         }
 
+        public void AnimatePlayer(Image[] source)
+        {
+            int end = source.Length - 1;
 
+            SlowDownFrameRate++;
+            if (SlowDownFrameRate == 4)
+            {
+                Steps++;
+                SlowDownFrameRate = 0;
+            }
+
+            if (Steps > end)
+            {
+                Steps = 0;
+            }
+
+            PlayerImg = source[Steps];
+        }
     }
 }

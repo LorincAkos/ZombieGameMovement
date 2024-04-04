@@ -125,13 +125,13 @@ namespace ZombieGameMovement
             if (player.GoLeft && player.PlayerX > 0)
             {
                 player.PlayerX -= player.PlayerSpeed;
-                AnimatePlayer(SpriteContainer.walkRight);
+                player.AnimatePlayer(SpriteContainer.walkRight);
             }
 
             if (player.GoRight && player.PlayerX + player.PlayerWidth < map.Width)
             {
                 player.PlayerX += player.PlayerSpeed;
-                AnimatePlayer(SpriteContainer.walkRight);
+                player.AnimatePlayer(SpriteContainer.walkRight);
             }
 
             if (player.GoUp && player.PlayerY > 500)
@@ -208,25 +208,13 @@ namespace ZombieGameMovement
 
         private void ShootBullet(EnumContainer.DirectionType direction)
         {
-            Bullet bullet = new()
-            {
-                direction = direction,
-                bulletLeft = player.PlayerX + (player.PlayerWidth / 2),
-                bulletTop = player.PlayerY + (player.PlayerHeight / 2),
-            };
+            Bullet bullet = new(direction, player.PlayerX, player.PlayerY);
             bullet.MakeBullet(map);
         }
 
         private void CreateZombies()
         {
-            PictureBox zom = new()
-            {
-                Image = Properties.Resources.zright,
-                Top = 42,
-                Left = 12
-            };
-            zombiesList.Add(zom);
-            map.Controls.Add(zom);
+            
         }
 
         private void RestartGame()
@@ -241,24 +229,6 @@ namespace ZombieGameMovement
 
         }
 
-        private void AnimatePlayer(Image[] source)
-        {
-            int end = source.Length - 1;
-
-            slowDownFrameRate++;
-            if (slowDownFrameRate == 4)
-            {
-                steps++;
-                slowDownFrameRate = 0;
-            }
-
-            if (steps > end)
-            {
-                steps = 0;
-            }
-
-            player.PlayerImg = source[steps];
-            map.Refresh();
+        
         }
     }
-}

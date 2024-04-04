@@ -12,7 +12,7 @@ namespace ZombieGameMovement
             GetImageFromExecutingAssembly("Kuno_walk4.png"),
         ];
 
-        static public readonly Image[] zomWalkRight =
+        static public readonly Image[] zombieWalkRight =
         [
             GetImageFromExecutingAssembly("Zom_walk1.png"),
             GetImageFromExecutingAssembly("Zom_walk2.png"),

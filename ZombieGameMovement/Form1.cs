@@ -19,8 +19,8 @@ namespace ZombieGameMovement
         {
             GameWithFixMap game = new()
             {
-                FormBorderStyle = FormBorderStyle.None,
-                WindowState = FormWindowState.Maximized
+                //FormBorderStyle = FormBorderStyle.None,
+                //WindowState = FormWindowState.Maximized
             };
             game.Show();
         }

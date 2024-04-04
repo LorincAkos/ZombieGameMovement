@@ -1,27 +1,27 @@
-using System.IO.Compression;
-using System.Reflection;
-using System.Windows.Forms;
-using ZombieGameMovement.Properties;
 using static ZombieGameMovement.EnumContainer;
-
 
 namespace ZombieGameMovement
 {
     public partial class GameWithFixMap : Form
     {
-        private Player player;
-        private DirectionType direction;
+        public static int FormWidth { get; private set; }
+        public static int FormHeight { get; private set; }
+
+        private Player Player { get; set; }
+        private DirectionType Direction { get; set; }
         private readonly int ammo;
 
-        private bool gameOver;
-        private readonly int zombieSpeed;
-        private int score;
-        private int maxEnemy;
+        private bool GameOver { get; set; }
+        private int ZombieSpeed { get; }
+        private int Score { get; set; }
+        private int MaxEnemy { get; set; }
 
-        private int steps;
-        private int slowDownFrameRate;
+        private int Steps { get; set; }
+        private int SlowDownFrameRate { get; set; }
 
-        List<Enemy> zombiesList = [];
+        private List<Zombie> ZombiesList { get; set; }
+        private List<Bullet> BulletList { get; set; }
+
 
         public GameWithFixMap()
         {
@@ -29,73 +29,79 @@ namespace ZombieGameMovement
 
             #region Setup
 
+            FormWidth = this.Width;
+            FormHeight = this.Height;
             DoubleBuffered = true;
-            player = new(100, 10, 200, 0);
-            zombieSpeed = 3;
-            score = 0;
-            steps = 0;
-            slowDownFrameRate = 0;
-            maxEnemy = 10;
+            Player = new(100, 10, FormWidth/2, FormHeight/2);
+            ZombieSpeed = 2;
+            Score = 0;
+            Steps = 0;
+            SlowDownFrameRate = 0;
+            ZombiesList = [];
+            BulletList = [];
+            MaxEnemy = 10;
             this.BackgroundImage = Properties.Resources.FixMap;
 
             #endregion
 
-            CreateZombies();
+            CreateZombie();
         }
 
         private void MainTimerEvent(object sender, EventArgs e)
         {
-            if (player.PlayerHealth > 0)
+            if (Player.PlayerHealth > 0)
             {
-                healthBar.Value = player.PlayerHealth;
+                healthBar.Value = Player.PlayerHealth;
             }
             else
             {
-                gameOver = true;
+                healthBar.Value = 0;
+                //GameOver = true;
+                //MessageBox.Show("Ded");
             }
 
             //txtammo.Text = "Ammo: " + ammo;
-            //txtscore.Text = "Kills: " + score;
+            txtscore.Text = "Kills: " + Score;
 
-            if (!player.Attack)
+            if (!Player.Attack)
             {
                 PlayerMovement();
-
             }
 
-            if (zombiesList.Count < maxEnemy)
+            if (ZombiesList.Count < MaxEnemy)
             {
-                CreateZombies();
+                CreateZombie();
             }
 
-            ZomMovement();
-
+            ZombieMovement();
+            BulletMovement();
+            CheckHit();
             this.Refresh();
         }
 
-        private void ZomMovement()
+        private void ZombieMovement()
         {
-            foreach (Enemy zom in zombiesList)
+            foreach (Zombie zombie in ZombiesList)
             {
-                if (zom.EnemyX > player.PlayerX)
+                if (zombie.EnemyX > Player.PlayerX)
                 {
-                    zom.EnemyX -= zombieSpeed;
-                    zom.ZomImage = AnimateEnemy(SpriteContainer.zomWalkRight,zom);
+                    zombie.EnemyX -= ZombieSpeed;
+                    zombie.ZomImage = zombie.AnimateEnemy(SpriteContainer.zombieWalkRight, zombie);
                 }
-                if (zom.EnemyX < player.PlayerX)
+                if (zombie.EnemyX < Player.PlayerX)
                 {
-                    zom.EnemyX += zombieSpeed;
-                    zom.ZomImage = AnimateEnemy(SpriteContainer.zomWalkRight,zom);
-                }
-
-                if (zom.EnemyY > player.PlayerY)
-                {
-                    zom.EnemyY -= zombieSpeed;
+                    zombie.EnemyX += ZombieSpeed;
+                    zombie.ZomImage = zombie.AnimateEnemy(SpriteContainer.zombieWalkRight, zombie);
                 }
 
-                if (zom.EnemyY < player.PlayerY)
+                if (zombie.EnemyY > Player.PlayerY)
                 {
-                    zom.EnemyY += zombieSpeed;
+                    zombie.EnemyY -= ZombieSpeed;
+                }
+
+                if (zombie.EnemyY < Player.PlayerY)
+                {
+                    zombie.EnemyY += ZombieSpeed;
                 }
             }
         }
@@ -103,58 +109,136 @@ namespace ZombieGameMovement
         private void PlayerMovement()
         {
 
-            if (player.GoLeft && player.PlayerX > 0)
+            if (Player.GoLeft && Player.PlayerX > 0)
             {
-                player.PlayerX -= player.PlayerSpeed;
-                AnimatePlayer(SpriteContainer.walkRight);
+                Player.PlayerX -= Player.PlayerSpeed;
+                Player.AnimatePlayer(SpriteContainer.walkRight);
             }
 
-            if (player.GoRight && player.PlayerX + player.PlayerWidth < this.Width)
+            if (Player.GoRight && Player.PlayerX + Player.PlayerWidth < this.Width)
             {
-                player.PlayerX += player.PlayerSpeed;
-                AnimatePlayer(SpriteContainer.walkRight);
+                Player.PlayerX += Player.PlayerSpeed;
+                Player.AnimatePlayer(SpriteContainer.walkRight);
             }
 
-            if (player.GoUp && player.PlayerY > 150)
+            if (Player.GoUp && Player.PlayerY > 150)
             {
-                player.PlayerY -= player.PlayerSpeed;
+                Player.PlayerY -= Player.PlayerSpeed;
             }
 
-            if (player.GoDown && player.PlayerY + player.PlayerHeight < this.Height)
+            if (Player.GoDown && Player.PlayerY + Player.PlayerHeight < this.Height)
             {
-                player.PlayerY += player.PlayerSpeed;
+                Player.PlayerY += Player.PlayerSpeed;
             }
         }
+
+        private void BulletMovement()
+        {
+            if (BulletList.Count == 0)
+            {
+                return;
+            }
+            foreach (Bullet bullet in BulletList)
+            {
+                if (bullet.Direction.Equals(DirectionType.LEFT))
+                {
+                    bullet.BulletImg.Left -= bullet.Speed;
+                }
+
+                else if (bullet.Direction.Equals(DirectionType.RIGHT))
+                {
+                    bullet.BulletImg.Left += bullet.Speed;
+                }
+
+                else if (bullet.Direction.Equals(DirectionType.UP))
+                {
+                    bullet.BulletImg.Top -= bullet.Speed;
+                }
+
+                else if (bullet.Direction.Equals(DirectionType.DOWN))
+                {
+                    bullet.BulletImg.Top += bullet.Speed;
+                }
+
+                else if (bullet.BulletImg.Left < 0 || bullet.BulletImg.Left > GameWithFixMap.FormWidth || bullet.BulletImg.Top < 0 || bullet.BulletImg.Top > GameWithFixMap.FormHeight)
+                {
+                    bullet.BulletTimer.Stop();
+                    bullet.BulletTimer.Dispose();
+                    bullet.BulletImg.Dispose();
+                }
+            }
+        }
+
+        private void CheckHit()
+        {
+            foreach (Zombie zombie in ZombiesList)
+            {
+                if ((zombie.EnemyX <= Player.PlayerX && zombie.EnemyX + zombie.EnemyWidth >= Player.PlayerX && zombie.EnemyY <= Player.PlayerY && zombie.EnemyY + zombie.EnemyHeight >= Player.PlayerY) ||
+                     (zombie.EnemyX <= Player.PlayerX + Player.PlayerWidth && zombie.EnemyX + zombie.EnemyWidth >= Player.PlayerX + Player.PlayerWidth && zombie.EnemyY <= Player.PlayerY && zombie.EnemyY + zombie.EnemyHeight >= Player.PlayerY) ||
+                    (zombie.EnemyX <= Player.PlayerX && zombie.EnemyX + zombie.EnemyWidth >= Player.PlayerX && zombie.EnemyY <= Player.PlayerY + Player.PlayerHeight && zombie.EnemyY + zombie.EnemyHeight >= Player.PlayerY + Player.PlayerHeight) ||
+                     (zombie.EnemyX <= Player.PlayerX + Player.PlayerWidth && zombie.EnemyX + zombie.EnemyWidth >= Player.PlayerX + Player.PlayerWidth && zombie.EnemyY <= Player.PlayerY + Player.PlayerHeight && zombie.EnemyY + zombie.EnemyHeight >= Player.PlayerY + Player.PlayerHeight)
+                    )
+                {
+                    //ZombiesList.Remove(zombie);
+                    Player.PlayerHealth = Player.PlayerHealth -25;
+
+                }
+                    foreach (Bullet bullet in BulletList)
+                {
+                    if (zombie.EnemyX <= bullet.BulletImg.Left && zombie.EnemyX + zombie.EnemyWidth >= bullet.BulletImg.Left &&
+                        zombie.EnemyY <= bullet.BulletImg.Top && zombie.EnemyY + zombie.EnemyHeight >= bullet.BulletImg.Top)
+                    {
+                        Score++;
+                        //zombie.ZomImage.Dispose();
+                        bullet.BulletImg.Dispose();
+                        ZombiesList.Remove(zombie);
+                        BulletList.Remove(bullet);
+                        return;
+                    }
+                    //if (zombie.EnemyX.Equals(bullet.BulletImg.Left) || zombie.EnemyY.Equals(bullet.BulletImg.Top))
+                    //{
+                    //    Score++;
+                    //    zombie.ZomImage.Dispose();
+                    //    bullet.BulletImg.Dispose();
+                    //    ZombiesList.Remove(zombie);
+                    //    BulletList.Remove(bullet);
+                    //    return;
+                    //}
+                }
+            }
+        }
+
+
 
         private void KeyIsDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode.Equals(Keys.Left))
             {
-                player.GoLeft = true;
-                direction = EnumContainer.DirectionType.LEFT;
+                Player.GoLeft = true;
+                Direction = EnumContainer.DirectionType.LEFT;
             }
 
             if (e.KeyCode.Equals(Keys.Right))
             {
-                player.GoRight = true;
-                direction = EnumContainer.DirectionType.RIGHT;
+                Player.GoRight = true;
+                Direction = EnumContainer.DirectionType.RIGHT;
             }
 
             if (e.KeyCode.Equals(Keys.Up))
             {
-                player.GoUp = true;
-                direction = EnumContainer.DirectionType.UP;
+                Player.GoUp = true;
+                Direction = EnumContainer.DirectionType.UP;
             }
 
             if (e.KeyCode.Equals(Keys.Down))
             {
-                player.GoDown = true;
-                direction = EnumContainer.DirectionType.DOWN;
+                Player.GoDown = true;
+                Direction = EnumContainer.DirectionType.DOWN;
             }
 
             if ((e.KeyCode.Equals(Keys.Space)))
             {
-                player.Attack = true;
+                Player.Attack = true;
             }
 
             if (e.KeyCode.Equals(Keys.K))
@@ -167,46 +251,43 @@ namespace ZombieGameMovement
         {
             if (e.KeyCode.Equals(Keys.Left))
             {
-                player.GoLeft = false;
+                Player.GoLeft = false;
             }
 
             if (e.KeyCode.Equals(Keys.Right))
             {
-                player.GoRight = false;
+                Player.GoRight = false;
             }
 
             if (e.KeyCode.Equals(Keys.Up))
             {
-                player.GoUp = false;
+                Player.GoUp = false;
             }
 
             if (e.KeyCode.Equals(Keys.Down))
             {
-                player.GoDown = false;
+                Player.GoDown = false;
             }
 
             if (e.KeyCode.Equals(Keys.Space))
             {
-                player.Attack = false;
-                ShootBullet(direction);
+                Player.Attack = false;
+                ShootBullet(Direction);
             }
         }
 
-        private void ShootBullet(EnumContainer.DirectionType direction)
+        private void ShootBullet(DirectionType direction)
         {
-            Bullet bullet = new()
-            {
-                direction = direction,
-                bulletLeft = player.PlayerX + (player.PlayerWidth / 2),
-                bulletTop = player.PlayerY + (player.PlayerHeight / 2),
-            };
+            Bullet bullet = new(direction, Player.PlayerX, Player.PlayerY + Player.PlayerHeight/2);
+            bullet.BulletTimer.Tick += new EventHandler(MainTimerEvent!);
+            BulletList.Add(bullet);
             bullet.MakeBullet(this);
         }
 
-        private void CreateZombies()
+        private void CreateZombie()
         {
-            Enemy zom = new();
-            zombiesList.Add(zom);
+            Zombie zombie = new();
+            ZombiesList.Add(zombie);
         }
 
         private void RestartGame()
@@ -217,50 +298,11 @@ namespace ZombieGameMovement
         private void CharacterPaintEvent(object sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
-            g.DrawImage(player.PlayerImg, player.PlayerX, player.PlayerY, player.PlayerWidth, player.PlayerHeight);
-            foreach (Enemy zom in zombiesList)
+            g.DrawImage(Player.PlayerImg, Player.PlayerX, Player.PlayerY, Player.PlayerWidth, Player.PlayerHeight);
+            foreach (Zombie zombie in ZombiesList)
             {
-                g.DrawImage(zom.ZomImage,zom.EnemyX,zom.EnemyY,zom.EnemyWidth,zom.EnemyHeight);
+                g.DrawImage(zombie.ZomImage, zombie.EnemyX, zombie.EnemyY, zombie.EnemyWidth, zombie.EnemyHeight);
             }
-
-        }
-
-        private void AnimatePlayer(Image[] source)
-        {
-            int end = source.Length - 1;
-
-            slowDownFrameRate++;
-            if (slowDownFrameRate == 4)
-            {
-                steps++;
-                slowDownFrameRate = 0;
-            }
-
-            if (steps > end)
-            {
-                steps = 0;
-            }
-
-            player.PlayerImg = source[steps];
-        }
-
-        private Image AnimateEnemy(Image[] source,Enemy zom)
-        {
-            int end = source.Length - 1;
-
-            zom.SlowDownEnemyFrameRate++;
-            if (zom.SlowDownEnemyFrameRate == 4)
-            {
-                zom.SpriteIndex++;
-                zom.SlowDownEnemyFrameRate = 0;
-            }
-
-            if (zom.SpriteIndex > end)
-            {
-                zom.SpriteIndex = 0;
-            }
-
-            return source[steps];
         }
     }
 }

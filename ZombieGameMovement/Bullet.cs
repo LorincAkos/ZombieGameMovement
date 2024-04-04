@@ -1,83 +1,78 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-//
-using System.Drawing;
-using System.Windows.Forms;
+﻿using static ZombieGameMovement.EnumContainer;
 
 namespace ZombieGameMovement
 {
     internal class Bullet
     {
-        public EnumContainer.DirectionType direction;
-        public int bulletLeft;
-        public int bulletTop;
-
-        private int speed = 20;
-        private PictureBox bullet = new();
-        private System.Windows.Forms.Timer bulletTimer = new();
+        public DirectionType Direction { get; }
+        public int Speed {get;}
+        public PictureBox BulletImg { get;}
+        public System.Windows.Forms.Timer BulletTimer {get;}
+        
+        public Bullet(DirectionType direction, int bulletLeft, int bulletTop)
+        {
+            Direction = direction;
+            Speed = 20;
+            BulletImg = new()
+            {
+                BackColor = Color.White,
+                Size = new Size(5, 5),
+                Tag = "bullet",
+                Left = bulletLeft,
+                Top = bulletTop,
+            };
+            BulletTimer = new()
+            {
+                Interval = Speed
+            };
+        }
 
         public void MakeBullet(PictureBox form)
         {
-            bullet.BackColor = Color.White;
-            bullet.Size = new Size(5, 5);
-            bullet.Tag = "bullet";
-            bullet.Left = bulletLeft;
-            bullet.Top = bulletTop;
-            bullet.BringToFront();
+            form.Controls.Add(BulletImg);
+            BulletImg.BringToFront();
 
-            form.Controls.Add(bullet);
-
-            bulletTimer.Interval = speed;
-            bulletTimer.Tick += new EventHandler(BulletTimerEvent);
-            bulletTimer.Start();
+            //BulletTimer.Tick += new EventHandler(BulletTimerEvent);
+            //BulletTimer.Start();
         }
 
         public void MakeBullet(Form form)
         {
-            bullet.BackColor = Color.White;
-            bullet.Size = new Size(5, 5);
-            bullet.Tag = "bullet";
-            bullet.Left = bulletLeft;
-            bullet.Top = bulletTop;
-            bullet.BringToFront();
+            form.Controls.Add(BulletImg);
+            BulletImg.BringToFront();
 
-            form.Controls.Add(bullet);
-
-            bulletTimer.Interval = speed;
-            bulletTimer.Tick += new EventHandler(BulletTimerEvent);
-            bulletTimer.Start();
+            //BulletTimer.Tick += new EventHandler(BulletTimerEvent);
+            //BulletTimer.Start();
         }
 
-        private void BulletTimerEvent(object? sender, EventArgs e)
-        {
-            if (direction.Equals(EnumContainer.DirectionType.LEFT))
-            {
-                bullet.Left -= speed;
-            }
+        //private void BulletTimerEvent(object? sender, EventArgs e)
+        //{
+        //    if (Direction.Equals(DirectionType.LEFT))
+        //    {
+        //        BulletImg.Left -= Speed;
+        //    }
 
-            if (direction.Equals(EnumContainer.DirectionType.RIGHT))
-            {
-                bullet.Left += speed;
-            }
+        //    else if (Direction.Equals(DirectionType.RIGHT))
+        //    {
+        //        BulletImg.Left += Speed;
+        //    }
 
-            if (direction.Equals(EnumContainer.DirectionType.UP)) 
-            {
-                bullet.Top -= speed;
-            }
+        //    else if (Direction.Equals(DirectionType.UP))
+        //    {
+        //        BulletImg.Top -= Speed;
+        //    }
 
-            if(direction.Equals(EnumContainer.DirectionType.DOWN))
-            {
-                bullet.Top += speed;
-            }
+        //    else if (Direction.Equals(DirectionType.DOWN))
+        //    {
+        //        BulletImg.Top += Speed;
+        //    }
 
-            if(bullet.Left < 10 || bullet.Left > 5000 || bullet.Top < 10 || bullet.Top > 2812)
-            {
-                bulletTimer.Stop();
-                bulletTimer.Dispose();
-                bullet.Dispose();
-            }
-        }
+        //    else if (BulletImg.Left < 0 || BulletImg.Left > GameWithFixMap.FormWidth || BulletImg.Top < 0 || BulletImg.Top > GameWithFixMap.FormHeight)
+        //    {
+        //        BulletTimer.Stop();
+        //        BulletTimer.Dispose();
+        //        BulletImg.Dispose();
+        //    }
+        //}
     }
 }
