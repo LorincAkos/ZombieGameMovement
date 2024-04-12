@@ -52,5 +52,7 @@
 
             PlayerImg = source[Steps];
         }
+
+        //TODO: same method for animating the death of the player like in the zombie class
     }
 }

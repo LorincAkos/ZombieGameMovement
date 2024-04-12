@@ -2,7 +2,7 @@
 {
     internal class Zombie
     {
-        public Image ZombieImage {  get; private set; }
+        public Image ZombieImage { get; private set; }
         public int EnemyX { get; set; }
         public int EnemyY { get; set; }
         public int EnemyWidth { get; }
@@ -39,7 +39,22 @@
                 zombie.SpriteIndex = 0;
             }
 
-            zombie.ZombieImage =  source[Steps];
+            zombie.ZombieImage = source[Steps];
+        }
+
+        public void AnimateEnemyDying()
+        {
+            int slowerFrameRate = 0;
+            int spriteIndex = 0;
+
+            slowerFrameRate++;
+            if (slowerFrameRate == 4)
+            {
+                spriteIndex++;
+                slowerFrameRate = 0;
+            }
+
+            //TODO: inport sprite for dying, logic for changing pictures (loop or add it to a timer?), dispose after last sprite
         }
 
     }

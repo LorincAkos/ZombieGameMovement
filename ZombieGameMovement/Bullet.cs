@@ -1,6 +1,4 @@
-﻿using static ZombieGameMovement.EnumContainer;
-
-namespace ZombieGameMovement
+﻿namespace ZombieGameMovement
 {
     internal class Bullet
     {

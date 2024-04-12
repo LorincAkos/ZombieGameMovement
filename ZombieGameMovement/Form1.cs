@@ -8,7 +8,7 @@ namespace ZombieGameMovement
             InitializeComponent();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void Button1_Click(object sender, EventArgs e)
         {
             GameWithFixMap game = new()
             {
@@ -18,7 +18,7 @@ namespace ZombieGameMovement
             game.Show();
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void Button2_Click(object sender, EventArgs e)
         {
             GameWithScrollableMap game = new()
             {

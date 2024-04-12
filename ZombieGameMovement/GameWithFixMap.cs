@@ -9,7 +9,6 @@ namespace ZombieGameMovement
 
         private Player Player { get; set; }
         private DirectionType Direction { get; set; }
-        private readonly int ammo;
         private int ZombieSpeed { get; }
         private int Score { get; set; }
         private int MaxEnemy { get; set; }
@@ -54,12 +53,10 @@ namespace ZombieGameMovement
             else
             {
                 healthBar.Value = 0;
-                GameOver();
-                //GameOver = true;
                 //MessageBox.Show("Ded");
+                GameOver();
             }
 
-            //txtammo.Text = "Ammo: " + ammo;
             txtscore.Text = "Kills: " + Score;
 
             if (!Player.Attack)
@@ -71,7 +68,7 @@ namespace ZombieGameMovement
             {
                 CreateZombie();
             }
-
+            
             ZombieMovement();
             BulletMovement();
             CheckHit();
@@ -173,13 +170,14 @@ namespace ZombieGameMovement
         {
             foreach (Zombie zombie in ZombiesList)
             {
+                //NOTE: Works but it hurts t osee it, try Control Bound Intersects with!!
                 if ((zombie.EnemyX <= Player.PlayerX && zombie.EnemyX + zombie.EnemyWidth >= Player.PlayerX && zombie.EnemyY <= Player.PlayerY && zombie.EnemyY + zombie.EnemyHeight >= Player.PlayerY) ||
                      (zombie.EnemyX <= Player.PlayerX + Player.PlayerWidth && zombie.EnemyX + zombie.EnemyWidth >= Player.PlayerX + Player.PlayerWidth && zombie.EnemyY <= Player.PlayerY && zombie.EnemyY + zombie.EnemyHeight >= Player.PlayerY) ||
                     (zombie.EnemyX <= Player.PlayerX && zombie.EnemyX + zombie.EnemyWidth >= Player.PlayerX && zombie.EnemyY <= Player.PlayerY + Player.PlayerHeight && zombie.EnemyY + zombie.EnemyHeight >= Player.PlayerY + Player.PlayerHeight) ||
                      (zombie.EnemyX <= Player.PlayerX + Player.PlayerWidth && zombie.EnemyX + zombie.EnemyWidth >= Player.PlayerX + Player.PlayerWidth && zombie.EnemyY <= Player.PlayerY + Player.PlayerHeight && zombie.EnemyY + zombie.EnemyHeight >= Player.PlayerY + Player.PlayerHeight)
                     )
                 {
-                    //ZombiesList.Remove(zombie);
+                    //NOTE: Program dies if zombie remowed here, do it elsewhere, use diferent logic or a plus parameter
                     Player.PlayerHealth = Player.PlayerHealth -25;
 
                 }

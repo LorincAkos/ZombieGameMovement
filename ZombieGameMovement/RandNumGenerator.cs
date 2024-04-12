@@ -2,7 +2,7 @@
 {
     public static class RandNumGenerator
     {
-        public static Random random = new();
+        private static Random random = new();
 
         public static void GetZomCoordinate(out int x, out int y)
         {

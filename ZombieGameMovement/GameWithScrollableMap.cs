@@ -1,7 +1,3 @@
-using System.IO.Compression;
-using System.Reflection;
-using System.Windows.Forms;
-using ZombieGameMovement.Properties;
 using static ZombieGameMovement.Bullet;
 
 
@@ -9,19 +5,15 @@ namespace ZombieGameMovement
 {
     public partial class GameWithScrollableMap : Form
     {
-        private Player player;
+        private readonly Player player;
         private DirectionType direction;
-        private MapSettings mapSettings;
+        private readonly MapSettings mapSettings;
         private readonly int ammo;
 
         private bool gameOver;
         private readonly int zombieSpeed;
-        private int score;
 
-        private int steps;
-        private int slowDownFrameRate;
-
-        List<PictureBox> zombiesList = [];
+        readonly List<PictureBox> zombiesList = [];
 
         public GameWithScrollableMap()
         {
@@ -33,13 +25,10 @@ namespace ZombieGameMovement
             player = new(100, 10, 200, 0);
             mapSettings = new(10, Height, Width, map.Height, map.Width);
             zombieSpeed = 3;
-            score = 0;
-            steps = 0;
-            slowDownFrameRate = 0;
 
             #endregion
 
-            CreateZombies();
+            //CreateZombies();
         }
 
 
@@ -212,15 +201,6 @@ namespace ZombieGameMovement
             bullet.MakeBullet(map);
         }
 
-        private void CreateZombies()
-        {
-            
-        }
-
-        private void RestartGame()
-        {
-
-        }
 
         private void CharacterPaintEvent(object sender, PaintEventArgs e)
         {
