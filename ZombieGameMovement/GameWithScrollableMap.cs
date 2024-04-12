@@ -2,7 +2,7 @@ using System.IO.Compression;
 using System.Reflection;
 using System.Windows.Forms;
 using ZombieGameMovement.Properties;
-using static ZombieGameMovement.EnumContainer;
+using static ZombieGameMovement.Bullet;
 
 
 namespace ZombieGameMovement
@@ -150,25 +150,25 @@ namespace ZombieGameMovement
             if (e.KeyCode.Equals(Keys.Left))
             {
                 player.GoLeft = true;
-                direction = EnumContainer.DirectionType.LEFT;
+                direction = DirectionType.LEFT;
             }
 
             if (e.KeyCode.Equals(Keys.Right))
             {
                 player.GoRight = true;
-                direction = EnumContainer.DirectionType.RIGHT;
+                direction = DirectionType.RIGHT;
             }
 
             if (e.KeyCode.Equals(Keys.Up))
             {
                 player.GoUp = true;
-                direction = EnumContainer.DirectionType.UP;
+                direction = DirectionType.UP;
             }
 
             if (e.KeyCode.Equals(Keys.Down))
             {
                 player.GoDown = true;
-                direction = EnumContainer.DirectionType.DOWN;
+                direction = DirectionType.DOWN;
             }
 
             if ((e.KeyCode == Keys.Space))
@@ -206,7 +206,7 @@ namespace ZombieGameMovement
             }
         }
 
-        private void ShootBullet(EnumContainer.DirectionType direction)
+        private void ShootBullet(DirectionType direction)
         {
             Bullet bullet = new(direction, player.PlayerX, player.PlayerY);
             bullet.MakeBullet(map);

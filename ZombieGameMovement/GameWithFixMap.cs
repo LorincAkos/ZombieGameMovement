@@ -1,4 +1,4 @@
-using static ZombieGameMovement.EnumContainer;
+using static ZombieGameMovement.Bullet;
 
 namespace ZombieGameMovement
 {
@@ -10,8 +10,6 @@ namespace ZombieGameMovement
         private Player Player { get; set; }
         private DirectionType Direction { get; set; }
         private readonly int ammo;
-
-        private bool GameOver { get; set; }
         private int ZombieSpeed { get; }
         private int Score { get; set; }
         private int MaxEnemy { get; set; }
@@ -56,6 +54,7 @@ namespace ZombieGameMovement
             else
             {
                 healthBar.Value = 0;
+                GameOver();
                 //GameOver = true;
                 //MessageBox.Show("Ded");
             }
@@ -86,12 +85,12 @@ namespace ZombieGameMovement
                 if (zombie.EnemyX > Player.PlayerX)
                 {
                     zombie.EnemyX -= ZombieSpeed;
-                    zombie.ZomImage = zombie.AnimateEnemy(SpriteContainer.zombieWalkRight, zombie);
+                    zombie.AnimateEnemy(SpriteContainer.zombieWalkRight, zombie);
                 }
                 if (zombie.EnemyX < Player.PlayerX)
                 {
                     zombie.EnemyX += ZombieSpeed;
-                    zombie.ZomImage = zombie.AnimateEnemy(SpriteContainer.zombieWalkRight, zombie);
+                    zombie.AnimateEnemy(SpriteContainer.zombieWalkRight, zombie);
                 }
 
                 if (zombie.EnemyY > Player.PlayerY)
@@ -107,6 +106,7 @@ namespace ZombieGameMovement
         }
 
         private void PlayerMovement()
+
         {
 
             if (Player.GoLeft && Player.PlayerX > 0)
@@ -208,32 +208,30 @@ namespace ZombieGameMovement
             }
         }
 
-
-
         private void KeyIsDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode.Equals(Keys.Left))
             {
                 Player.GoLeft = true;
-                Direction = EnumContainer.DirectionType.LEFT;
+                Direction =DirectionType.LEFT;
             }
 
             if (e.KeyCode.Equals(Keys.Right))
             {
                 Player.GoRight = true;
-                Direction = EnumContainer.DirectionType.RIGHT;
+                Direction = DirectionType.RIGHT;
             }
 
             if (e.KeyCode.Equals(Keys.Up))
             {
                 Player.GoUp = true;
-                Direction = EnumContainer.DirectionType.UP;
+                Direction = DirectionType.UP;
             }
 
             if (e.KeyCode.Equals(Keys.Down))
             {
                 Player.GoDown = true;
-                Direction = EnumContainer.DirectionType.DOWN;
+                Direction = DirectionType.DOWN;
             }
 
             if ((e.KeyCode.Equals(Keys.Space)))
@@ -290,10 +288,12 @@ namespace ZombieGameMovement
             ZombiesList.Add(zombie);
         }
 
-        private void RestartGame()
+        private void GameOver()
         {
-
+            //TODO: Store the important data before closing the form!!!
+            this.Close();
         }
+
 
         private void CharacterPaintEvent(object sender, PaintEventArgs e)
         {
@@ -301,8 +301,10 @@ namespace ZombieGameMovement
             g.DrawImage(Player.PlayerImg, Player.PlayerX, Player.PlayerY, Player.PlayerWidth, Player.PlayerHeight);
             foreach (Zombie zombie in ZombiesList)
             {
-                g.DrawImage(zombie.ZomImage, zombie.EnemyX, zombie.EnemyY, zombie.EnemyWidth, zombie.EnemyHeight);
+                g.DrawImage(zombie.ZombieImage, zombie.EnemyX, zombie.EnemyY, zombie.EnemyWidth, zombie.EnemyHeight);
             }
         }
+
+        
     }
 }

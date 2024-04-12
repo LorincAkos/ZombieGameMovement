@@ -26,6 +26,7 @@
             PlayerY = playerY;
             PlayerWidth = 100;
             PlayerHeight = 100;
+            SlowDownFrameRate = 0;
             GoLeft = false;
             GoRight = false;
             GoUp = false;

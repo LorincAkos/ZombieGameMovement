@@ -12,19 +12,19 @@
             {
                 case 0:
                     x = 0;
-                    y = random.Next(0,1920);
+                    y = random.Next(0,GameWithFixMap.FormWidth);
                     break;
                 case 1:
-                    x = 1080;
-                    y = random.Next(0, 1920);
+                    x = GameWithFixMap.FormHeight;
+                    y = random.Next(0, GameWithFixMap.FormWidth);
                     break;
                 case 2:
-                    x = random.Next(0, 1080);
+                    x = random.Next(0, GameWithFixMap.FormHeight);
                     y = 0;
                     break;
                 case 3:
-                    x = random.Next(0,1080);
-                    y = 1920;
+                    x = random.Next(0, GameWithFixMap.FormHeight);
+                    y = GameWithFixMap.FormWidth;
                     break;
                 default:
                     x = 0;

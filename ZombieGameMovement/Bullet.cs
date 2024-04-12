@@ -4,6 +4,14 @@ namespace ZombieGameMovement
 {
     internal class Bullet
     {
+        public enum DirectionType
+        {
+            UP,
+            DOWN,
+            LEFT,
+            RIGHT,
+        }
+
         public DirectionType Direction { get; }
         public int Speed {get;}
         public PictureBox BulletImg { get;}

@@ -2,7 +2,7 @@
 {
     internal class Zombie
     {
-        public Image ZomImage {  get; set; }
+        public Image ZombieImage {  get; private set; }
         public int EnemyX { get; set; }
         public int EnemyY { get; set; }
         public int EnemyWidth { get; }
@@ -13,7 +13,7 @@
         public Zombie()
         {
             RandNumGenerator.GetZomCoordinate(out int x, out int y);
-            ZomImage = SpriteContainer.zombieWalkRight[0];
+            ZombieImage = SpriteContainer.zombieWalkRight[0];
             EnemyX = x;
             EnemyY = y;
             EnemyWidth = 100;
@@ -23,7 +23,7 @@
             Steps = 0;
         }
 
-        public Image AnimateEnemy(Image[] source, Zombie zombie)
+        public void AnimateEnemy(Image[] source, Zombie zombie)
         {
             int end = source.Length - 1;
 
@@ -39,7 +39,7 @@
                 zombie.SpriteIndex = 0;
             }
 
-            return source[Steps];
+            zombie.ZombieImage =  source[Steps];
         }
 
     }
