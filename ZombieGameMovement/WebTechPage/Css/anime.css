@@ -1,0 +1,24 @@
+.grid-container {
+    width: 80%;
+    margin-top: 50px;
+    margin-left: 5%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Creates three equal-width columns */
+    gap: 20px; /* Adds some space between grid items */
+  }
+  
+  .card {
+    width: auto;
+    margin: 10px;
+    background-color: #fff;
+    padding: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .card img {
+    width: 100%;
+    height: auto;
+}
+
+
+  

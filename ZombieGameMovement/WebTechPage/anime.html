@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="Css/header.css">
+    <link rel="stylesheet" href="Css/sidebar.css">
+    <link rel="stylesheet" href="Css/footer.css">
+    <link rel="stylesheet" href="Css/anime.css">
+    <script src="Scripts/jquery_3.1.7.js"></script>
+    <script src="Scripts/anime_page_filter.js"></script>
+    <script src="Scripts/button_control.js"></script>
+    <script src="Scripts/script.js"></script>
+</head>
+<body>
+    <!-- Loading circle -->
+    <div class="loading-screen">
+        <div class="spinner">
+        </div>
+    </div>
+
+    <!-- Navbar -->
+    <header class = "header">
+        <nav class="left-section">
+            <button class="left-section-button" id="home_page">Home</button>
+            <button class="left-section-button">Anime</button>
+            <button class="left-section-button">Manga</button>
+            <button class="left-section-button">FAQ</button>
+        </nav>
+        <div class="right-section">
+            <button class="profile-button">
+                Rate page
+            </button>
+        </div>
+    </header>
+
+    <main>
+        <!-- Sidebar -->
+        <section>
+            <div class="sidebar">
+                <h2>Sidebar</h2>
+                <ul>
+                    <li><button id="topten" itemId="1" onclick="openDisplayPage(this.getAttribute('itemId'))">Top 10 Anime</button></li>
+                    <li><button>asd</button></li>
+                    <li><button>asd</button></li>
+                    <li><button>asd</button></li>
+                </ul>
+            </div>
+        </section>
+        
+        <!-- Main content -->
+        <section>
+            <div class="grid-container">
+                <div class="card">
+                    <img src="https://via.placeholder.com/150" alt="Anime Title">
+                    <h3>Anime Title 1</h3>
+                    <p>Description of Anime Title 1</p>
+                </div>
+                <div class="card">
+                    <img src="https://via.placeholder.com/150" alt="Anime Title">
+                    <h3>Anime Title 1</h3>
+                    <p>Description of Anime Title 1</p>
+                </div>
+                <div class="card">
+                    <img src="https://via.placeholder.com/150" alt="Anime Title">
+                    <h3>Anime Title 1</h3>
+                    <p>Description of Anime Title 1</p>
+                </div>
+                <div class="card">
+                    <img src="https://via.placeholder.com/150" alt="Anime Title">
+                    <h3>Anime Title 1</h3>
+                    <p>Description of Anime Title 1</p>
+                </div>
+                <div class="card">
+                    <img src="https://via.placeholder.com/150" alt="Anime Title">
+                    <h3>Anime Title 1</h3>
+                    <p>Description of Anime Title 1</p>
+                </div>
+                <div class="card">
+                    <img src="https://via.placeholder.com/150" alt="Anime Title">
+                    <h3>Anime Title 1</h3>
+                    <p>Description of Anime Title 1</p>
+                </div>
+            </div>
+    </section>
+    </main>
+    <footer>
+        <div>
+            <p>&copy; 2024 MyAnimeList Clone</p>
+        </div>
+    </footer>
+</body>
+</html>
