@@ -1,24 +1,50 @@
+main {
+  flex: 1;
+}
+
+#main-content {
+  width: 100%;
+  float: left;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-container{
+margin-left: 5%;
+width: 80%;
+float: left;
+}
+
 .grid-container {
     width: 80%;
-    margin-top: 50px;
+    float: left;
+    margin-top: 0px;
     margin-left: 5%;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr); /* Creates three equal-width columns */
-    gap: 20px; /* Adds some space between grid items */
-  }
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
   
-  .card {
-    width: auto;
+.card {
+    width: 27%;
     margin: 10px;
     background-color: #fff;
     padding: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
+}
 
-  .card img {
+.card:hover{
+  width: 30%;
+}
+
+.card img {
     width: 100%;
-    height: auto;
+}
+
+#title{
+    margin-top: 60px;
+    margin-left: 5%;
 }
 
 
-  
+

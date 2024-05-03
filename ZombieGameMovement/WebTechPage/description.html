@@ -4,30 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+</head>
     <link rel="stylesheet" href="Css/header.css">
     <link rel="stylesheet" href="Css/sidebar.css">
     <link rel="stylesheet" href="Css/footer.css">
-    <link rel="stylesheet" href="Css/anime.css">
+    <link rel="stylesheet" href="Css/description.css">
     <script src="jquery_3.1.7.js"></script>
     <script src="button_control.js"></script>
-    <script src="anime_page_filter.js"></script>
-    <script src="script.js"></script>
-</head>
+    <script src="description.js"></script>
 <body>
-    <!-- Loading circle -->
-    <div class="loading-screen">
-        <div class="spinner">
-        </div>
-    </div>
-    <div class="content">
-
-    </div>
-
-    <!-- Navbar -->
     <header class = "header">
         <nav class="left-section">
             <button class="left-section-button" id="home_page">Home</button>
-            <button class="left-section-button">Anime</button>
+            <button class="left-section-button" id="anime_page" value="Top 10 anime">Anime</button>
             <button class="left-section-button">Manga</button>
             <button class="left-section-button">FAQ</button>
         </nav>
@@ -38,34 +27,24 @@
         </div>
     </header>
 
-    <main id="main-content">
+    <main>
         <!-- Sidebar -->
         <section>
             <div class="sidebar">
                 <h2>Sidebar</h2>
-                <ul>
-                    <li><button id="topten" value="Top 10 anime" onclick="openDisplayPage(this.getAttribute('value'))">Top 10</button></li>
-                    <li><button>asd</button></li>
-                    <li><button>asd</button></li>
-                    <li><button>asd</button></li>
+                <ul id="sidebar-list">
+                    
                 </ul>
             </div>
         </section>
-        
+
         <!-- Main content -->
         <section>
-            <h2 id="title"></h2>
-        </section>
-        <section>
-            <div class="grid-container" id="content">
-                
+            <div id="content">
+
             </div>
         </section>
+
     </main>
-    <footer>
-        <div>
-            <p>&copy; 2024 MyAnimeList Clone</p>
-        </div>
-    </footer>
 </body>
 </html>

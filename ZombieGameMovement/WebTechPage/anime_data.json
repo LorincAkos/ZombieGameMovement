@@ -1,0 +1,119 @@
+[
+    {
+        "pageTitle":"Top 10 anime",
+        "items": [
+            {
+                "itemId": 1,
+                "img": "https://via.placeholder.com/150",
+                "alt": "Picture 1",
+                "title": "Title 1",
+                "description": "Description 1",
+                "episodes": "12",
+                "start":"2023.02.04",
+                "end": "2023.06.18",
+                "rating":"7.2"
+            },
+            {
+                "itemId": 2,
+                "img": "https://via.placeholder.com/150",
+                "alt": "Picture 2",
+                "title": "Title 2",
+                "description": "Description 2",
+                "episodes": "12",
+                "start":"2023.02.04",
+                "end": "2023.06.18",
+                "rating":"7.2"
+            },
+            {
+                "itemId": 3,
+                "img": "https://via.placeholder.com/150",
+                "alt": "Picture 3",
+                "title": "Title 3",
+                "description": "Description 3",
+                "episodes": "12",
+                "start":"2023.02.04",
+                "end": "2023.06.18",
+                "rating":"7.2"
+            },
+            {
+                "itemId": 4,
+                "img": "https://via.placeholder.com/150",
+                "alt": "Picture 4",
+                "title": "Title 4",
+                "description": "Description 4",
+                "episodes": "12",
+                "start":"2023.02.04",
+                "end": "2023.06.18",
+                "rating":"7.2"
+            },
+            {
+                "itemId": 5,
+                "img": "https://via.placeholder.com/150",
+                "alt": "Picture 5",
+                "title": "Title 5",
+                "description": "Description 5",
+                "episodes": "12",
+                "start":"2023.02.04",
+                "end": "2023.06.18",
+                "rating":"7.2"
+            },
+            {
+                "itemId": 6,
+                "img": "https://via.placeholder.com/150",
+                "alt": "Picture 6",
+                "title": "Title 6",
+                "description": "Description 6",
+                "episodes": "12",
+                "start":"2023.02.04",
+                "end": "2023.06.18",
+                "rating":"7.2"
+            },
+            {
+                "itemId": 7,
+                "img": "https://via.placeholder.com/150",
+                "alt": "Picture 7",
+                "title": "Title 7",
+                "description": "Description 7",
+                "episodes": "12",
+                "start":"2023.02.04",
+                "end": "2023.06.18",
+                "rating":"7.2"
+            },
+            {
+                "itemId": 8,
+                "img": "https://via.placeholder.com/150",
+                "alt": "Picture 8",
+                "title": "Title 8",
+                "description": "Description 8",
+                "episodes": "12",
+                "start":"2023.02.04",
+                "end": "2023.06.18",
+                "rating":"7.2"
+            },
+            {
+                "itemId": 9,
+                "img": "https://via.placeholder.com/150",
+                "alt": "Picture 9",
+                "title": "Title 9",
+                "description": "Description 9",
+                "episodes": "12",
+                "start":"2023.02.04",
+                "end": "2023.06.18",
+                "rating":"7.2"
+            },
+            {
+                "itemId": 10,
+                "img": "https://via.placeholder.com/150",
+                "alt": "Picture 10",
+                "title": "Title 10",
+                "description": "Description 10",
+                "episodes": "12",
+                "start":"2023.02.04",
+                "end": "2023.06.18",
+                "rating":"7.2"
+            }
+        ]
+    }
+
+    
+]
