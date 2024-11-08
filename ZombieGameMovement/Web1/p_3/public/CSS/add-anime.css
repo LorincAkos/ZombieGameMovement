@@ -1,0 +1,16 @@
+.input-label{
+    color: white;
+    display: block;
+}
+
+.input-container{
+    margin-top: 10%;
+    margin-left: 10%;
+}
+
+.input-item{
+    margin-top: 1rem;
+}
+form{
+    font-size: 16pt;
+}

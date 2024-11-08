@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../CSS/nabar.css" />
+    <link rel="stylesheet" href="../CSS/general.css" />
+    <link rel="stylesheet" href="../CSS/card.css" />
+    <link rel="stylesheet" href="../CSS/description.css">
+    <script defer src="../Js/navbar.js"></script>
+    <script defer src="../Js/anime_description.js"></script>
+    <script defer src="../Js/imageSlider.js"></script>
+</head>
+    
+<body>
+     <!--Navbar-->
+     <section>
+        <nav class="navbar">
+          <div class="navbar_container">
+            <a href="" id="navbar_logo">MyList</a>
+            <div class="navbar_toggle" id="mobile-menu">
+              <span class="bar"></span>
+              <span class="bar"></span>
+              <span class="bar"></span>
+            </div>
+            <ul class="navbar_menu">
+              <li class="navbar_item">
+                <a href="/" class="navbar_links">Home</a>
+              </li>
+              <li class="navbar_item">
+                <a href="anime_page" class="navbar_links">Anime</a>
+              </li>
+              <li class="navbar_item">
+                <a href="manga_page" class="navbar_links">Manga</a>
+              </li>
+              <li class="navbar_btn">
+                <a href="add_anime" class="button">+ Add</a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </section>
+
+        <!--ImageSlider-->
+    <section>
+        <div class="slideshow-container">
+          <div class="slide">
+            <img src="Images/azur_img.jpg" alt="Slide 1" />
+          </div>
+          <div class="slide">
+            <img src="Images/blue_img.jpg" alt="Slide 2" />
+          </div>
+          <div class="slide">
+            <img src="Images/tg_img.jpg" alt="Slide 3" />
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="wrapper">
+            <div class="title white-text" id="title"></div>
+            <div class="score white-text" id="score"></div>
+            <div class="image white-text" id="image"></div>
+            <div class="desc white-text" id="description"></div>
+        </div>
+      </section>
+    
+</body>
+</html>

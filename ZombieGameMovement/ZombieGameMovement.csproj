@@ -63,4 +63,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Web1\" />
+  </ItemGroup>
 </Project>

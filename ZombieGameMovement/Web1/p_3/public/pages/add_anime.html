@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="../CSS/nabar.css" />
+    <link rel="stylesheet" href="../CSS/general.css" />
+    <link rel="stylesheet" href="../CSS/card.css" />
+    <link rel="stylesheet" href="../CSS/add-anime.css" />
+    <script defer src="../Js/navbar.js"></script>
+    <script defer src="../Js/imageSlider.js"></script>
+    <script defer src="../Js/add-anime.js"></script>
+  </head>
+  <body>
+    <!--Navbar-->
+    <section>
+      <nav class="navbar">
+        <div class="navbar_container">
+          <a href="" id="navbar_logo">MyList</a>
+          <div class="navbar_toggle" id="mobile-menu">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+          </div>
+          <ul class="navbar_menu">
+            <li class="navbar_item">
+              <a href="/" class="navbar_links">Home</a>
+            </li>
+            <li class="navbar_item">
+              <a href="anime_page" class="navbar_links">Anime</a>
+            </li>
+            <li class="navbar_item">
+              <a href="manga_page" class="navbar_links">Manga</a>
+            </li>
+            <li class="navbar_btn">
+              <a href="add_anime" class="button">+ Add</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </section>
+
+    <!--ImageSlider-->
+    <section>
+      <div class="slideshow-container">
+        <div class="slide">
+          <img src="Images/azur_img.jpg" alt="Slide 1" />
+        </div>
+        <div class="slide">
+          <img src="Images/blue_img.jpg" alt="Slide 2" />
+        </div>
+        <div class="slide">
+          <img src="Images/tg_img.jpg" alt="Slide 3" />
+        </div>
+      </div>
+    </section>
+
+    <!--Inputs-->
+    <section>
+      <form id="anime_form">
+        <div class="input-container">
+          <label class="input-label" for="title">Title:</label>
+          <input
+            type="text"
+            id="title"
+            name="title"
+            placeholder="Enter name"
+            autofocus
+            autocomplete="off"
+            pattern="[A-Za-z0-9 ]+"
+            required
+          />
+
+          <label for="img" class="input-label">Image URL:</label>
+          <input
+            type="text"
+            id="img"
+            name="img"
+            placeholder="Enter image URL"
+            autocomplete="off"
+            pattern="https?://.+"
+            required
+          />
+
+          <label for="description" class="input-label">Description</label>
+          <input
+            type="text"
+            id="description"
+            name="description"
+            placeholder="Enter description"
+            autocomplete="off"
+            pattern="^[A-Za-z0-9\s,.'&quot;-]+(?:\s+[A-Za-z0-9\s,.'&quot;-]+)*[.!?]?$"
+            required
+          />
+
+          <label for="type" class="input-label">Type</label>
+          <input
+            type="text"
+            id="type"
+            name="type"
+            list="types"
+            placeholder="Enter type"
+            required
+          />
+          <datalist id="types">
+            <option value="TV"></option>
+            <option value="CD"></option>
+          </datalist>
+
+          <label for="episode" class="input-label">Episode</label>
+          <input
+            type="text"
+            id="episode"
+            name="episode"
+            placeholder="Enter episode number"
+            autocomplete="off"
+            pattern="[0-9]+"
+            maxlength="255"
+            required
+          />
+
+          <label for="start" class="input-label">Start</label>
+          <input
+            type="date"
+            id="start"
+            name="start"
+            placeholder="Enter date"
+            required
+          />
+
+          <label for="end" class="input-label">End</label>
+          <input
+            type="date"
+            id="end"
+            name="end"
+            placeholder="Enter date"
+            required
+          />
+
+          <label for="status" class="input-label">Status</label>
+          <input
+            type="text"
+            id="status"
+            name="status"
+            list="statuses"
+            placeholder="Enter status"
+            required
+          />
+          <datalist id="statuses">
+            <option value="Airing"></option>
+            <option value="Finished"></option>
+          </datalist>
+
+          <label for="producers" class="input-label">Producers</label>
+          <input
+            type="text"
+            id="producers"
+            name="producers"
+            placeholder="Enter producers"
+            autocomplete="off"
+            pattern="[A-Za-z0-9 ]+"
+            required
+          />
+
+          <label for="licensors" class="input-label">Licensors</label>
+          <input
+            type="text"
+            id="licensors"
+            name="licensors"
+            placeholder="Enter licensors"
+            autocomplete="off"
+            pattern="[A-Za-z0-9 ]+"
+          />
+
+          <label for="studios" class="input-label">Studios</label>
+          <input
+            type="text"
+            id="studios"
+            name="studios"
+            placeholder="Enter studios"
+            autocomplete="off"
+            pattern="[A-Za-z0-9 ]+"
+            required
+          />
+
+          <label for="genres" class="input-label">Genres</label>
+          <select id="genres" name="genres" title="genres" multiple required>
+            <option value="rom">Rom</option>
+            <option value="comedy">Comedy</option>
+            <option value="horror">Horror</option>
+            <option value="action">Action</option>
+            <option value="fantasy">Fantasy</option>
+          </select>
+
+          <label for="duration" class="input-label">Duration</label>
+          <input
+            type="text"
+            id="duration"
+            name="duration"
+            placeholder="Enter duration"
+            autocomplete="off"
+            pattern="[0-9]+"
+            required
+          />
+
+          <label for="rating" class="input-label">Status</label>
+          <input
+            type="text"
+            id="rating"
+            name="rating"
+            list="ratings"
+            placeholder="Enter rating"
+            required
+          />
+          <datalist id="ratings">
+            <option value="PG-10"></option>
+            <option value="PG-13"></option>
+            <option value="PG-15"></option>
+            <option value="PG-17"></option>
+            <option value="R"></option>
+          </datalist>
+
+          <label for="score" class="input-label">Score</label>
+          <input
+            type="text"
+            id="score"
+            name="score"
+            placeholder="Enter score"
+            required
+          />
+
+          <button type="submit">Add</button>
+        </div>
+      </form>
+    </section>
+  </body>
+</html>
