@@ -230,74 +230,228 @@ def best_first_search(graph_data, start_node, goal_node, heuristic_key):
 
     return []  # Return empty path if no solution found
 
-def beam_search(graph_data, graph_name, start_node, goal_node, heuristic_key, beam_width):
-    # Get the adjacency list from the edges
-    edges = graph_data[graph_name]['edges']
-    adjacency_list = create_adjacency_list(edges)
+def beam_search(graph_data, start_node, goal_node, heuristic_key, beam_width):
+    # Extract graph details
+    edges = graph_data['edges']
+    heuristics = graph_data['heuristics'].get(goal_node, {})
 
-    # Get heuristics
-    heuristics = graph_data[graph_name]['heuristics'].get(heuristic_key, {})
-
-    # Initialize the beam with the start node
-    beam = [start_node]
-    visited = set([start_node])
-    came_from = {start_node: None}
-
-    while beam:
-        next_beam = []
-
-        # Explore all nodes in the current beam
-        for current_node in beam:
-            neighbors = adjacency_list.get(current_node, [])
-
-            for neighbor in neighbors:
-                if neighbor not in visited:
-                    visited.add(neighbor)
-
-                    # Get the heuristic for the neighbor
-                    heuristic_value = heuristics.get(neighbor, float('inf'))
-
-                    # Add the neighbor with its heuristic value
-                    next_beam.append((heuristic_value, neighbor))
-                    came_from[neighbor] = current_node
-
-        # Sort the next beam based on heuristic values (ascending)
-        next_beam.sort(key=lambda x: x[0])
-
-        # Select the top 'beam_width' nodes for the next beam
-        next_beam = [node for _, node in next_beam[:beam_width]]
-
-        # If the goal node is in the next beam, reconstruct the path and return it
-        if goal_node in next_beam:
-            path = []
-            current_node = goal_node
-            while current_node is not None:
-                path.append(current_node)
-                current_node = came_from[current_node]
-            path.reverse()
-            return path
-
-        # Update the beam for the next level
-        beam = next_beam
-
-    return []  # Return empty path if no solution found
-
-
-
-
-def create_adjacency_list(edges):
+    # Convert edges to adjacency list
     adjacency_list = {}
-    for node1, node2, _ in edges:
+    for node1, node2, cost in edges:
         if node1 not in adjacency_list:
             adjacency_list[node1] = []
         if node2 not in adjacency_list:
             adjacency_list[node2] = []
-        adjacency_list[node1].append(node2)
-        adjacency_list[node2].append(node1)
-    return adjacency_list
+        adjacency_list[node1].append((node2, cost))
+        adjacency_list[node2].append((node1, cost))  # Assuming undirected graph
 
+    # Priority queue for beam search
+    beam = [(heuristics.get(start_node, float('inf')), 0, [start_node])]
 
+    while beam:
+        next_beam = []
+        for _, g_cost, current_path in beam:
+            current_node = current_path[-1]
 
+            # If the goal node is reached, return the path and cost
+            if current_node == goal_node:
+                return current_path, g_cost
+
+            # Explore neighbors
+            for neighbor, edge_cost in adjacency_list.get(current_node, []):
+                if neighbor not in current_path:  # Avoid revisiting nodes
+                    new_g_cost = g_cost + edge_cost
+                    h_cost = heuristics.get(neighbor, float('inf'))
+                    next_beam.append((h_cost, new_g_cost, current_path + [neighbor]))
+
+        # Keep the best `beam_width` nodes based on the heuristic
+        next_beam.sort(key=lambda x: x[0])  # Sort by heuristic cost
+        beam = next_beam[:beam_width]
+
+    return None, float('inf')  # No path found
+
+def branch_and_bound(graph_data, start_node, goal_node):
+    # Convert edges to adjacency list with costs
+    edges = graph_data['edges']
+    adjacency_list = {}
+    for node1, node2, cost in edges:
+        if node1 not in adjacency_list:
+            adjacency_list[node1] = []
+        if node2 not in adjacency_list:
+            adjacency_list[node2] = []
+        adjacency_list[node1].append((node2, cost))
+        adjacency_list[node2].append((node1, cost))  # Assuming undirected graph
+
+    # Priority queue: (path_cost, current_path)
+    pq = []
+    heapq.heappush(pq, (0, [start_node]))
+    
+    visited = set()
+
+    while pq:
+        # Get the node with the least path cost
+        current_cost, current_path = heapq.heappop(pq)
+        current_node = current_path[-1]
+
+        # If we've already visited this node, skip it
+        if current_node in visited:
+            continue
+
+        # Mark the node as visited
+        visited.add(current_node)
+
+        # Goal check
+        if current_node == goal_node:
+            return current_path, current_cost
+
+        # Expand neighbors
+        for neighbor, edge_cost in adjacency_list.get(current_node, []):
+            if neighbor not in visited:
+                total_cost = current_cost + edge_cost
+                new_path = current_path + [neighbor]
+                heapq.heappush(pq, (total_cost, new_path))
+
+    return None, float('inf')  # No path found
+
+def branch_and_bound_extended(graph_data, start_node, goal_node):
+    # Extract edges and convert to adjacency list with costs
+    edges = graph_data['edges']
+    adjacency_list = {}
+    for node1, node2, cost in edges:
+        if node1 not in adjacency_list:
+            adjacency_list[node1] = []
+        if node2 not in adjacency_list:
+            adjacency_list[node2] = []
+        adjacency_list[node1].append((node2, cost))
+        adjacency_list[node2].append((node1, cost))  # Assuming undirected graph
+
+    # Priority queue: (path_cost, current_path)
+    pq = []
+    heapq.heappush(pq, (0, [start_node]))
+    
+    # Extended set to store visited nodes with the minimum cost to reach them
+    extended_set = {}
+
+    while pq:
+        # Get the node with the least path cost
+        current_cost, current_path = heapq.heappop(pq)
+        current_node = current_path[-1]
+
+        # If we've reached the goal, return the path and its cost
+        if current_node == goal_node:
+            return current_path, current_cost
+
+        # If the current node is already visited with a lower cost, skip it
+        if current_node in extended_set and extended_set[current_node] <= current_cost:
+            continue
+
+        # Update the extended set with the current node and its cost
+        extended_set[current_node] = current_cost
+
+        # Expand neighbors
+        for neighbor, edge_cost in adjacency_list.get(current_node, []):
+            total_cost = current_cost + edge_cost
+            new_path = current_path + [neighbor]
+            # Add to the priority queue for further exploration
+            heapq.heappush(pq, (total_cost, new_path))
+
+    return None, float('inf')  # No path found
+
+def branch_and_bound_heuristic(graph_data, start_node, goal_node, heuristic_key):
+    # Extract graph details
+    edges = graph_data['edges']
+    heuristics = graph_data['heuristics'].get(goal_node, {})
+    
+    # Convert edges to an adjacency list
+    adjacency_list = {}
+    for node1, node2, cost in edges:
+        if node1 not in adjacency_list:
+            adjacency_list[node1] = []
+        if node2 not in adjacency_list:
+            adjacency_list[node2] = []
+        adjacency_list[node1].append((node2, cost))
+        adjacency_list[node2].append((node1, cost))  # Assuming undirected graph
+
+    # Priority queue: (estimated_total_cost, path_cost, current_path)
+    pq = []
+    heapq.heappush(pq, (heuristics.get(start_node, float('inf')), 0, [start_node]))
+    
+    # Extended set for visited nodes
+    extended_set = {}
+
+    while pq:
+        # Get the path with the smallest estimated cost
+        estimated_total_cost, path_cost, current_path = heapq.heappop(pq)
+        current_node = current_path[-1]
+
+        # If the goal is reached, return the path and its cost
+        if current_node == goal_node:
+            return current_path, path_cost
+
+        # Skip if already visited with a cheaper cost
+        if current_node in extended_set and extended_set[current_node] <= path_cost:
+            continue
+
+        # Mark the current node with the current cost
+        extended_set[current_node] = path_cost
+
+        # Expand neighbors
+        for neighbor, edge_cost in adjacency_list.get(current_node, []):
+            new_cost = path_cost + edge_cost
+            heuristic_cost = heuristics.get(neighbor, float('inf'))
+            estimated_cost = new_cost + heuristic_cost
+            new_path = current_path + [neighbor]
+            # Push into the priority queue
+            heapq.heappush(pq, (estimated_cost, new_cost, new_path))
+
+    return None, float('inf')  # No path found
+
+def a_star_search(graph_data, start_node, goal_node, heuristic_key):
+    # Extract graph details
+    edges = graph_data['edges']
+    heuristics = graph_data['heuristics'].get(goal_node, {})
+    
+    # Convert edges to adjacency list
+    adjacency_list = {}
+    for node1, node2, cost in edges:
+        if node1 not in adjacency_list:
+            adjacency_list[node1] = []
+        if node2 not in adjacency_list:
+            adjacency_list[node2] = []
+        adjacency_list[node1].append((node2, cost))
+        adjacency_list[node2].append((node1, cost))  # Assuming undirected graph
+
+    # Priority queue: (f_cost, g_cost, current_path)
+    open_list = []
+    heapq.heappush(open_list, (heuristics.get(start_node, float('inf')), 0, [start_node]))
+
+    # Closed set for visited nodes
+    closed_set = {}
+
+    while open_list:
+        # Get the node with the smallest f_cost
+        f_cost, g_cost, current_path = heapq.heappop(open_list)
+        current_node = current_path[-1]
+
+        # If goal is reached, return the path and cost
+        if current_node == goal_node:
+            return current_path, g_cost
+
+        # Skip if already visited with a smaller cost
+        if current_node in closed_set and closed_set[current_node] <= g_cost:
+            continue
+
+        # Mark node as visited
+        closed_set[current_node] = g_cost
+
+        # Explore neighbors
+        for neighbor, edge_cost in adjacency_list.get(current_node, []):
+            new_g_cost = g_cost + edge_cost
+            h_cost = heuristics.get(neighbor, float('inf'))
+            f_cost = new_g_cost + h_cost
+            heapq.heappush(open_list, (f_cost, new_g_cost, current_path + [neighbor]))
+
+    return None, float('inf')  # No path found
 
 # Usage
 file_path = "graph.txt"  # Replace with the actual path to your file
@@ -305,9 +459,9 @@ graph_data = parse_graph_file(file_path)
 
 # Usage Example
 # Assuming we have already parsed the file into `graph_data`
-graph_name = "GRAPH_2"
-start = "S"
-goal = "G"
+graph_name = "GRAPH_3"
+start = "s"
+goal = "g"
 heuristic_key = goal
 beam_width = 3  # Increase beam width for better exploration
 #print(graph_data)  # Check the structure of graph_data
@@ -326,6 +480,24 @@ path = best_first_search(graph_data[graph_name], start, goal, heuristic_key)
 print(f"Best First Search path from {start} to {goal}: {path}")
 
 
-
-path = beam_search(graph_data, 'GRAPH_2', start, goal, heuristic_key, beam_width)
+#NOTE:fix it error with graph2
+path, cost = beam_search(graph_data[graph_name], start, goal, heuristic_key, beam_width)
 print("Beam Search path:", path)
+print("Total path cost:", cost)
+
+path, cost = branch_and_bound(graph_data[graph_name], start, goal)
+print("Branch and Bound path:", path)
+print("Total path cost:", cost)
+
+path, cost = branch_and_bound_extended(graph_data[graph_name], start, goal)
+print("Branch and Bound (Extended Set) path:", path)
+print("Total path cost:", cost)
+
+path, cost = branch_and_bound_heuristic(graph_data[graph_name], start, goal, heuristic_key)
+print("Branch and Bound with Heuristics path:", path)
+print("Total path cost:", cost)
+
+#NOTE: fix it error with graph3
+path, cost = a_star_search(graph_data[graph_name], start, goal, heuristic_key)
+print("A* Search path:", path)
+print("Total path cost:", cost)
